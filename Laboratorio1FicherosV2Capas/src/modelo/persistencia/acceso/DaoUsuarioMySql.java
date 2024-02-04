@@ -70,18 +70,18 @@ public class DaoUsuarioMySql implements DaoUsuario{
 		}		
 		Usuario usuario = null;
 		
-		String query = "select PASSWORD,EDAD from usuarios "
-				+ "where NOMBRE = ?";
+		String query = "select * from usuarios where NOMBRE = ?";
+
 		try {
 			PreparedStatement ps = conexion.prepareStatement(query);
 			ps.setString(1, nombre);
 			
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			if(rs.next()){
 				usuario = new Usuario();
-				usuario.setNombre(rs.getString(1));
-				usuario.setPassword(rs.getString(2));
-				usuario.setEdad(rs.getInt(3));
+				usuario.setNombre(rs.getString("nombre"));
+				usuario.setPassword(rs.getString("password"));
+				usuario.setEdad(rs.getInt("edad"));
 				
 			}
 		} catch (SQLException e) {
@@ -104,7 +104,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 		}			
 		List<Usuario> listaPersonas = new ArrayList<>();
 		
-		String query = "select ID,NOMBRE,EDAD,PESO from personas";
+		String query = "select NOMBRE,PASSWORD,EDAD from usuarios";
 		try {
 			PreparedStatement ps = conexion.prepareStatement(query);
 			
