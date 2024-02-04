@@ -15,9 +15,9 @@ import modelo.persistencia.interfaces.DaoUsuario;
 public class DaoUsuarioMySql implements DaoUsuario{
 	
 	private static String url = "jdbc:mysql://localhost:3306/";
-	private static String nombreBBDD = "GestionUsuarios";
+	private static String nombreBBDD = "GestionUsuariosLab2";
 	private static String usuario = "root";
-	private static String password = "";
+	private static String password = "root";
 	
 	private Connection conexion;
 	
@@ -183,7 +183,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de usuarios si no existe
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS Usuarios ("
-                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                   // + "id INT AUTO_INCREMENT PRIMARY KEY,"
                     + "nombre VARCHAR(50) NOT NULL,"
                     + "password VARCHAR(50) NOT NULL,"
                     + "edad INT NOT NULL)"
