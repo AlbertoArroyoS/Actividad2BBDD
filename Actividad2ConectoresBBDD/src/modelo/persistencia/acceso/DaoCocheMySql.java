@@ -12,15 +12,19 @@ import modelo.entidad.Coche;
 import modelo.persistencia.interfaces.DaoCoche;
 
 /**
- * Clase en la que estan los metodos que implementan el interface:
+ * Clase en la que estan los metodos que implementan el interface y los métodos propios:
  * 
- * 1. altaCliente(Cliente cliente) : int
- * 2. buscarCliente(String cif) : Cliente
- * 3. buscarTodos() : List<Cliente>
- * 4. eliminarCliente(String cif) : int
- * 5. modificarCliente(Cliente cliente) : int
- * 6. buscarPorDomicilio(String domicilio) : List<Cliente>
- * 7. crearObjetoCliente(Cliente cl) : void 
+ *  1. altaCoche(Coche coche) : int
+ *  2. eliminarCoche(int id) : int
+ *  3. buscarCoche(int id) : Coche
+ *  4. modificarCoche(Coche coche) : int
+ *  5. buscarTodosCoches() : List<Coche>
+ *  6. accesoADatos() : int 
+ * Métodos própios
+ *  7. abrirConexion() : boolean 
+ *  8. cerrarConexion() : boolean 
+ *  9. crearBaseDeDatos(Connection conexion) : void 
+ * 10. crearTablaUsuarios(Connection conexion) :void  
  * 
  * @see DaoCoche
  *  
@@ -31,10 +35,19 @@ import modelo.persistencia.interfaces.DaoCoche;
  */
 public class DaoCocheMySql implements DaoCoche{
 	
+	static ConfiguracionPropiedades configuracion = new ConfiguracionPropiedades();
+	/*
 	private static String url = "jdbc:mysql://localhost:3306/";
 	private static String nombreBBDD = "GestionUsuariosLab2";
 	private static String coche = "root";
 	private static String password = "";
+	*/
+	private static String url = configuracion.getProperty("url");
+	private static String nombreBBDD = configuracion.getProperty("nombreBBDD");
+	private static String coche = configuracion.getProperty("usuario");
+	private static String password = configuracion.getProperty("password");
+	
+	
 	
 	private int filas = 0;
 	private String sql;
@@ -42,6 +55,7 @@ public class DaoCocheMySql implements DaoCoche{
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
+	//1
 	/**
 	 * Método para dar de alta un coche en la Base de datos que recibimos por parametro
 	 * 
@@ -81,6 +95,7 @@ public class DaoCocheMySql implements DaoCoche{
 		
 		return filas;
 	}
+	//2
 	/**
 	 * Método para eliminar un coche por su id
 	 * 
@@ -111,6 +126,7 @@ public class DaoCocheMySql implements DaoCoche{
 		
 		return filas;
 	}
+	//3
 	/**
 	 * Método que devuelve un objeto coche a partir de su id
 	 * @param id representa el id del coche que vamos a
@@ -146,6 +162,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return coche;
 	}
+	//4
 	/**
 	 * Método para modificar un coche de la base de datos introduciendo su id
 	 * por parámetro
@@ -182,6 +199,7 @@ public class DaoCocheMySql implements DaoCoche{
 		
 		return filas;
 	}
+	//5
 	/**
 	 * Método que devuelve una lista de coches
 	 * @return - <b>List<Usuario>
@@ -214,7 +232,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return lista;
 	}
-	
+	//6
 	/**
 	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
 	 * crear la base de datos en caso que que no exista y al metodo para crear
@@ -242,7 +260,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return 1;
 	}
-		
+	//7	
 	/**
 	 * Abre una conexión a la base de datos utilizando la URL, el nombre de la base de datos,
 	 * el usuario y la contraseña proporcionados.
@@ -258,7 +276,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return true;
 	}
-	
+	//8
 	/**
 	 * Cierra la conexión con la base de datos.
 	 * 
@@ -274,7 +292,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return true;
 	}
-	
+	//9
 	 /**
      * Crea una base de datos utilizando la conexión proporcionada si no existe.
      *
@@ -288,8 +306,7 @@ public class DaoCocheMySql implements DaoCoche{
         	statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + nombreBBDD);
         }
     }
-    
-
+    //10
 	// Método para crear la tabla de usuarios
     /**
      * Crea una tabla de coches en la base de datos proporcionada si no existe.

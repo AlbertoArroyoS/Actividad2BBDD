@@ -22,7 +22,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	private Connection conexion;
 	
 	/**
-	 * Método que introduce un objeto usuario en un fichero en formato USUARIO/PASSWORD
+	 * Método para dar de alta un usuario en la base de datos que recibe por parametro
 	 * @param usuario que queremos introducir en el ficheor
 	 * @return <b>true</b> en caso de que hayamos introducido el usuario en el fichoro
 	 * , <b>false</b> en caso contrario.
@@ -60,7 +60,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 * Método que devuelve un objeto usuario a partir de un nombre
 	 * @param nombre representa el nombre del usuario del que vamos a
 	 * hacer la busqueda.
-	 * @return el objeto usuario si existe en el fichero, <b>>null</b> en caso de
+	 * @return el objeto usuario si existe en la base de datos, <b>>null</b> en caso de
 	 * que no exista o hayamos tenido un problema en la conexion 
 	 */
 	@Override
@@ -129,7 +129,9 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	}
 
 	/**
-	 * Crea la conexion para el almacenamiento de usuarios.
+	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
+	 * crear la base de datos en caso que que no exista y al metodo para crear
+	 * la tabla con sus propiedades
 	 * 
 	 * @return Entero que indica el resultado de la operación:
 	 *         - 1 si la conexión se creó exitosamente.
@@ -154,6 +156,13 @@ public class DaoUsuarioMySql implements DaoUsuario{
 		return 1;
 	}
 	
+	/**
+	 * Abre una conexión a la base de datos utilizando la URL, el nombre de la base de datos,
+	 * el usuario y la contraseña proporcionados.
+	 *
+	 * @return true si la conexión se abre con éxito, false en caso de error.
+	 * @throws SQLException Si ocurre un error al intentar establecer la conexión.
+	 */
 	public boolean abrirConexion(){
 		try {
 			conexion = DriverManager.getConnection(url+nombreBBDD,usuario,password);
