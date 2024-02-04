@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,11 @@ import modelo.entidad.Usuario;
 import modelo.persistencia.interfaces.DaoUsuario;
 
 public class DaoUsuarioMySql implements DaoUsuario{
+	
+	private static String url = "jdbc:mysql://localhost:3306/";
+	private static String nombreBBDD = "GestionUsuarios";
+	private static String usuario = "root";
+	private static String password = "";
 	
 	private Connection conexion;
 	
@@ -131,11 +137,15 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 */
 	@Override
 	public int crearConexion() {
-		String url = "jdbc:mysql://localhost:3306/bbdd";
-		String usuario = "root";
-		String password = "";
 		try {
 			conexion = DriverManager.getConnection(url,usuario,password);
+			// Crear la base de datos
+            crearBaseDeDatos(conexion);
+            // Establecer conexión con la base de datos recién creada
+            try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, usuario, password)) {
+                // Crear la tabla de usuarios
+                crearTablaUsuarios(conexionBD);
+            }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,5 +168,27 @@ public class DaoUsuarioMySql implements DaoUsuario{
 		}
 		return true;
 	}
+	
+	// Método para crear la base de datos
+    private static void crearBaseDeDatos(Connection conexion) throws SQLException {
+        try (Statement statement = conexion.createStatement()) {
+            // Crear la base de datos si no existe
+        	statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + nombreBBDD);
+        }
+    }
+    
+
+	// Método para crear la tabla de usuarios
+    private static void crearTablaUsuarios(Connection conexion) throws SQLException {
+        try (Statement statement = conexion.createStatement()) {
+            // Crear la tabla de usuarios si no existe
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Usuarios ("
+                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                    + "nombre VARCHAR(50) NOT NULL,"
+                    + "password VARCHAR(50) NOT NULL,"
+                    + "edad INT NOT NULL)"
+            );
+        }
+    }
 
 }
