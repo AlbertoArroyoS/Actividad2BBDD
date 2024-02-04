@@ -10,7 +10,7 @@ import modelo.negocio.GestorUsuario;
 public class OpcionesVista {
 	
 	private GestorUsuario gestor= new GestorUsuario();
-	
+		
 	//login del usuario
 	/**
      * Realiza la opción de inicio de sesión del usuario.Comprueba si el nombre y la contraseña están en el
@@ -68,7 +68,7 @@ public class OpcionesVista {
      */
 	public void opcion3() {
 		List<Usuario> listaAuxiliar = gestor.usuariosRegistrados();
-		if (listaAuxiliar.isEmpty()) {
+		if (listaAuxiliar == null || listaAuxiliar.isEmpty()) {
 			System.out.println("No existe ningun usuario registrado");
 		}
 		else {
@@ -129,7 +129,8 @@ public class OpcionesVista {
 		int crearFichero= gestor.iniciarFichero();
 		switch (crearFichero) {
 	        case 1://login del usuario, lectura del archivo
-	        	System.out.println("Creado el archivo");
+	        	//System.out.println("Creado el archivo");
+	        	System.out.println("Conexion correcta");
 	            break;
 	        case 2://nuevo usuario, escritura del archivo si no existe ya
 	        	System.out.println("Error al crear el archivo");

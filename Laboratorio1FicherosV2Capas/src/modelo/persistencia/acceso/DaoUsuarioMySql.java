@@ -17,7 +17,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	private static String url = "jdbc:mysql://localhost:3306/";
 	private static String nombreBBDD = "GestionUsuariosLab2";
 	private static String usuario = "root";
-	private static String password = "root";
+	private static String password = "";
 	
 	private Connection conexion;
 	
@@ -29,7 +29,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 */
 	@Override
 	public boolean altaUsuario(Usuario u) {
-		if(crearConexion()==2){
+		if(!abrirConexion()){
 			return false;
 		}
 		boolean alta = true;
@@ -65,7 +65,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 */
 	@Override
 	public Usuario obtenerUsuario(String nombre) {
-		if(crearConexion()==2){
+		if(!abrirConexion()){
 			return null;
 		}		
 		Usuario usuario = null;
@@ -99,7 +99,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 */
 	@Override
 	public List<Usuario> listarTodosUsuarios() {
-		if(crearConexion()==2){
+		if(!abrirConexion()){
 			return null;
 		}			
 		List<Usuario> listaPersonas = new ArrayList<>();
@@ -136,7 +136,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
 	 *         - 2 si hubo un error al intentar hacer la conexion
 	 */
 	@Override
-	public int crearConexion() {
+	public int crearAccesoADatos() {
 		try {
 			conexion = DriverManager.getConnection(url,usuario,password);
 			// Crear la base de datos
@@ -152,6 +152,17 @@ public class DaoUsuarioMySql implements DaoUsuario{
 			return 2;
 		}
 		return 1;
+	}
+	
+	public boolean abrirConexion(){
+		try {
+			conexion = DriverManager.getConnection(url+nombreBBDD,usuario,password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	/**

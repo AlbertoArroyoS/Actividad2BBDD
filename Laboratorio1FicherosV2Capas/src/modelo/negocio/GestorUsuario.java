@@ -74,7 +74,7 @@ public class GestorUsuario {
 	 *         - 3 si el fichero ya existe.
 	 */
 	public int iniciarFichero() {		
-		int crearFichero = daoUsuario.crearConexion();
+		int crearFichero = daoUsuario.crearAccesoADatos();
 		return crearFichero;
 	}
 	

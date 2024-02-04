@@ -124,7 +124,7 @@ public class DaoUsuarioFicheros implements DaoUsuario{
 	 *         - 3 si el fichero ya existe y se ha cargado.
 	 */
 	@Override
-	public int crearConexion() {
+	public int crearAccesoADatos() {
 		file = new File(NOMBRE_FICHERO);
 		//si el archivo existe
 		
