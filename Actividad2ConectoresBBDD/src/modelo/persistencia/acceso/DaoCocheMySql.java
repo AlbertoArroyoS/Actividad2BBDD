@@ -42,13 +42,13 @@ public class DaoCocheMySql implements DaoCoche{
 	private static String coche = "root";
 	private static String password = "";
 	*/
+	//Obtenemos del fichero de propiedades los valores para la conexion a la BBDD
 	private static String url = configuracion.getProperty("url");
 	private static String nombreBBDD = configuracion.getProperty("nombreBBDD");
 	private static String coche = configuracion.getProperty("usuario");
 	private static String password = configuracion.getProperty("password");
 	
-	
-	
+	//variables
 	private int filas = 0;
 	private String sql;
 	private Connection conexion;
