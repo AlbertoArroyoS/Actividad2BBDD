@@ -75,8 +75,7 @@ public class DaoCocheMySql implements DaoCoche{
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}
-		finally{
+		}finally{
 			cerrarConexion();
 		}
 		
@@ -106,8 +105,7 @@ public class DaoCocheMySql implements DaoCoche{
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}
-		finally{
+		}finally{
 			cerrarConexion();
 		}
 		
@@ -142,54 +140,92 @@ public class DaoCocheMySql implements DaoCoche{
 				coche.setKilometros(rs.getInt("KILOMETROS"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
+		}finally {
+			cerrarConexion();
 		}
 		return coche;
 	}
-
+	/**
+	 * Método para modificar un coche de la base de datos introduciendo su id
+	 * por parámetro
+	 * 
+	 * @return Entero que indica el resultado de la operación:
+	 *         - <b>0</b> no se ha dado de alta ningun coche
+	 *         - <b>1</b> si se ha añadido correctamente
+	 *         - <b>2</b> si hay un error al establecer la conexion
+	 *         - <b>3</b> error de Excepcion
+	 */
 	@Override
 	public int modificarCoche(Coche coche) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!abrirConexion()){
+			filas=2;
+			return filas;
+		}
+		sql = "update COCHES set MARCA = ?, MODELO = ?, AÑO_FABRICACION = ?, KILOMETROS = ?"
+				+ " where ID = ?";
+		try {
+			ps = conexion.prepareStatement(sql);	
+			ps.setString(1, coche.getMarca());
+			ps.setString(2, coche.getModelo());
+			ps.setInt(3, coche.getFabYear());
+			ps.setInt(4, coche.getKilometros());;
+			ps.setInt(5, coche.getId());
+			filas = ps.executeUpdate();
+			filas=1;
+		} catch (SQLException e) {
+			filas=3;
+			return filas;
+		}finally{
+			cerrarConexion();
+		}
+		
+		return filas;
 	}
-
+	/**
+	 * Método que devuelve una lista de coches
+	 * @return - <b>List<Usuario>
+	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 */
 	@Override
 	public List<Coche> buscarTodosCoches() {
-		sql = "select * from clientes";
-		List<Cliente> lista = new ArrayList<>();
+		if(!abrirConexion()){
+			return null;
+		}	
+		sql = "select * from COCHES";
+		List<Coche> lista = new ArrayList<>();
+		Coche coche = null;
 		try {
-			ps = conn.prepareStatement(sql); 
+			ps = conexion.prepareStatement(sql); 
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				Cliente cl = new Cliente();;
-				crearObjetoCliente(cl);
-				lista.add(cl);
+				coche = new Coche();
+				coche.setId(rs.getInt("ID"));
+				coche.setMarca(rs.getString("MARCA"));
+				coche.setModelo(rs.getString("MODELO"));
+				coche.setFabYear(rs.getInt("AÑO_FABRICACION"));
+				coche.setKilometros(rs.getInt("KILOMETROS"));
+				lista.add(coche);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;			
+		}finally {
+			cerrarConexion();
 		}
 		return lista;
 	}
-
-	@Override
-	public int accesoADatos() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-		
+	
 	/**
 	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
 	 * crear la base de datos en caso que que no exista y al metodo para crear
 	 * la tabla con sus propiedades
 	 * 
 	 * @return Entero que indica el resultado de la operación:
-	 *         - 1 si la conexión se creó exitosamente.
-	 *         - 2 si hubo un error al intentar hacer la conexion
+	 *         - <b>1</b> si la conexión se creó exitosamente.
+	 *         - <b>2</b> si hubo un error al intentar hacer la conexion
 	 */
 	@Override
-	public int crearAccesoADatos() {
+	public int accesoADatos() {
 		try {
 			conexion = DriverManager.getConnection(url,coche,password);
 			// Crear la base de datos
@@ -206,13 +242,18 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return 1;
 	}
-	
+		
+	/**
+	 * Abre una conexión a la base de datos utilizando la URL, el nombre de la base de datos,
+	 * el usuario y la contraseña proporcionados.
+	 *
+	 * @return - <b>true</b> si la conexión se abre con éxito
+	 *         - <b>false</b> false en caso de error.
+	 */
 	public boolean abrirConexion(){
 		try {
 			conexion = DriverManager.getConnection(url+nombreBBDD,coche,password);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -221,7 +262,8 @@ public class DaoCocheMySql implements DaoCoche{
 	/**
 	 * Cierra la conexión con la base de datos.
 	 * 
-	 * @return true si la conexión se cerró correctamente, false si ocurrió un error.
+	 * @return - <b>true</b> si la conexión se cerró correctamente
+	 *         - <b>false</b> false en caso de error.
 	 */
 	public boolean cerrarConexion(){
 		try {
@@ -233,7 +275,13 @@ public class DaoCocheMySql implements DaoCoche{
 		return true;
 	}
 	
-	// Método para crear la base de datos
+	 /**
+     * Crea una base de datos utilizando la conexión proporcionada si no existe.
+     *
+     * @param conexion representa la conexión a la base de datos donde se creará la nueva base de datos.
+     * @throws SQLException Si ocurre un error al intentar crear la base de datos.
+     * 
+     */
     private static void crearBaseDeDatos(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la base de datos si no existe
@@ -243,14 +291,21 @@ public class DaoCocheMySql implements DaoCoche{
     
 
 	// Método para crear la tabla de usuarios
+    /**
+     * Crea una tabla de coches en la base de datos proporcionada si no existe.
+     *
+     * @param conexion La conexión a la base de datos donde se creará la nueva tabla de coches.
+     * @throws SQLException Si ocurre un error al intentar crear la tabla de coches.
+     */
     private static void crearTablaUsuarios(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de usuarios si no existe
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Usuarios ("
-                   // + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                    + "nombre VARCHAR(50) NOT NULL,"
-                    + "password VARCHAR(50) NOT NULL,"
-                    + "edad INT NOT NULL)"
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS coches ("
+                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                    + "marca VARCHAR(50) NOT NULL,"
+                    + "modelo VARCHAR(50) NOT NULL,"
+                    + "año_fabricacion INT NOT NULL,"
+                    + "kilometros INT NOT NULL)"
             );
         }
     }
