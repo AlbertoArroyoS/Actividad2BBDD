@@ -21,11 +21,10 @@ public class Coche {
 		return id;
 	}
 
-	/*
-	 * El Id lo incrementara automaticamente la BBDD
+
 	public void setId(int id) {
 		this.id = id;
-	}*/
+	}
 
 
 	public String getMarca() {

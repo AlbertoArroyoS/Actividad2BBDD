@@ -11,5 +11,5 @@ public interface DaoCoche {
 	Coche buscarCoche(int id);
 	int modificarCoche (Coche coche);	
 	List<Coche> buscarTodosCoches();
-
+	int accesoADatos();
 }
