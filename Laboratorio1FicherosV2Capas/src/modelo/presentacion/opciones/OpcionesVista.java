@@ -9,6 +9,8 @@ import modelo.negocio.GestorUsuario;
 
 public class OpcionesVista {
 	
+	private GestorUsuario gestor= new GestorUsuario();
+	
 	//login del usuario
 	/**
      * Realiza la opción de inicio de sesión del usuario.Comprueba si el nombre y la contraseña están en el
@@ -17,7 +19,6 @@ public class OpcionesVista {
      * @param leer Scanner utilizado para la entrada de datos.
      */
 	public void opcion1(Scanner leer) {
-		GestorUsuario gestor= new GestorUsuario();
 		Usuario usuarioAuxiliar =introducirDatosLogin(leer);		
 		if (gestor.validarUsuario(usuarioAuxiliar) == 2) {
 			System.out.println("¡Bienvenido, " + usuarioAuxiliar.getNombre() + "!");
@@ -35,7 +36,6 @@ public class OpcionesVista {
      * @param leer Scanner utilizado para la entrada de datos.
      */
 	public void opcion2(Scanner leer) {
-		GestorUsuario gestor= new GestorUsuario();
 		Usuario usuarioAuxiliar = introducirDatos(leer);
 		int resultadoValidar = gestor.validarUsuario(usuarioAuxiliar);
 		switch (resultadoValidar) {
@@ -67,7 +67,6 @@ public class OpcionesVista {
      * Lista todos los usuarios registrados.
      */
 	public void opcion3() {
-		GestorUsuario gestor= new GestorUsuario();
 		List<Usuario> listaAuxiliar = gestor.usuariosRegistrados();
 		if (listaAuxiliar.isEmpty()) {
 			System.out.println("No existe ningun usuario registrado");
@@ -127,7 +126,6 @@ public class OpcionesVista {
      * Inicia el programa, llamando al método para crear el archivo y muestra mensajes según el resultado.
      */
 	public void iniciarPrograma() {
-		GestorUsuario gestor= new GestorUsuario();
 		int crearFichero= gestor.iniciarFichero();
 		switch (crearFichero) {
 	        case 1://login del usuario, lectura del archivo

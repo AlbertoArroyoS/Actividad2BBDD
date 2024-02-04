@@ -9,6 +9,6 @@ public interface DaoUsuario {
 	boolean altaUsuario(Usuario u);
 	Usuario obtenerUsuario(String nombre);
 	List<Usuario> listarTodosUsuarios();	
-	int crearFichero();
+	int crearConexion();
 
 }

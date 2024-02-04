@@ -4,10 +4,14 @@ import java.util.List;
 
 import modelo.entidad.Usuario;
 import modelo.persistencia.acceso.DaoUsuarioFicheros;
+import modelo.persistencia.acceso.DaoUsuarioMySql;
 import modelo.persistencia.interfaces.DaoUsuario;
 
 
 public class GestorUsuario {
+	
+	//private DaoUsuario daoUsuario = new DaoUsuarioFicheros();
+	private DaoUsuario daoUsuario = new DaoUsuarioMySql();
 	
 
 	/**
@@ -21,7 +25,6 @@ public class GestorUsuario {
 	 *         - 3 si la edad es menor de 18 y no se puede añadir
 	 */
 	public int validarUsuario(Usuario usuario) {
-		DaoUsuario daoUsuario = new DaoUsuarioFicheros();
 		Usuario usuarioObtenido = daoUsuario.obtenerUsuario(usuario.getNombre());
 		
 		if(usuarioObtenido != null) {
@@ -50,7 +53,6 @@ public class GestorUsuario {
 	 * en caso contrario.
 	 */
 	public boolean introducir(Usuario usuario) {
-		DaoUsuario daoUsuario = new DaoUsuarioFicheros();
 		boolean estaAgregado = daoUsuario.altaUsuario(usuario);
 		return estaAgregado;
 	}
@@ -60,7 +62,6 @@ public class GestorUsuario {
 	 * @return List<Usuario> que representa la lista de los usuarios .
 	 */
 	public List<Usuario> usuariosRegistrados(){
-		DaoUsuario daoUsuario = new DaoUsuarioFicheros();
 		return daoUsuario.listarTodosUsuarios();
 	}
 	/**
@@ -72,9 +73,8 @@ public class GestorUsuario {
 	 *         - 2 si hubo un error al intentar crear el fichero.
 	 *         - 3 si el fichero ya existe.
 	 */
-	public int iniciarFichero() {
-		DaoUsuario daoUsuario = new DaoUsuarioFicheros();		
-		int crearFichero = daoUsuario.crearFichero();
+	public int iniciarFichero() {		
+		int crearFichero = daoUsuario.crearConexion();
 		return crearFichero;
 	}
 	
