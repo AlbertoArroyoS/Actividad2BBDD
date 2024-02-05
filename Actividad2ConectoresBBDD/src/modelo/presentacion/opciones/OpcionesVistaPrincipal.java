@@ -190,8 +190,17 @@ public class OpcionesVistaPrincipal {
 		}	
 	}
 	
-	public void opcion6(Scanner leer) {
+	public void opcion6Consultar(Scanner leer) {
 		
+		System.out.println("url:"+ gestor.obtenerPropiedades("url"));
+		System.out.println("nombreBBDD:"+gestor.obtenerPropiedades("nombreBBDD"));
+		System.out.println("usuario:"+gestor.obtenerPropiedades("usuario"));
+		System.out.println("password:"+gestor.obtenerPropiedades("password"));
+	
+	}
+	
+	public void opcion6Editar(Scanner leer) {
+		gestor.cambiarPropiedad(null, null);
 	}
 	
 	public void opcion7(Scanner leer) {
