@@ -10,6 +10,7 @@ import modelo.persistencia.interfaces.DaoCoche;
 public class GestorCoche {
 	
 	private DaoCoche daoCoche = new DaoCocheMySql();
+	private ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
 	
 	//validar datos introducidos del coche
 
@@ -104,15 +105,34 @@ public class GestorCoche {
 	}
 	
 	public String obtenerPropiedades(String propiedad) {
-		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
 		conf.getProperty(propiedad);
 		return null;
 		
 	}
 	public void cambiarPropiedad(String propiedad, String valor) {
-		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
 		conf.setProperty(propiedad, propiedad);
 		
+	}
+	/**
+	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
+	 * crear la base de datos en caso que que no exista y al metodo para crear
+	 * la tabla con sus propiedades
+	 * 
+	 * @return Entero que indica el resultado de la operación:
+	 *         - <b>1</b> si la conexión se creó exitosamente.
+	 *         - <b>2</b> si hubo un error al intentar hacer la conexion
+	 */
+	public int iniciarAccesoADatos() {
+		int accesoADatos= daoCoche.accesoADatos();
+		return accesoADatos;
+	}
+	/**
+	 * Metodo para acceder a un fichero properties que esta dentro de nuestro "classpath"
+	 * @return true si la conexion ha sido correcta y false en caso de que no
+	 */
+	public boolean iniciarPropiedades() {
+		boolean configuracion=conf.inicializarPropiedades();
+		return configuracion;
 	}
 	
 	

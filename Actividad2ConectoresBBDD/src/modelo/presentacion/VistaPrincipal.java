@@ -37,9 +37,40 @@ public class VistaPrincipal {
 	                	opciones.opcion2(leer);
 	                    break;
 	                case 3:
-	                	opciones.opcion3();
+	                	opciones.opcion3(leer);
 	                    break;
 	                case 4:
+	                	opciones.opcion4(leer);
+	                    break;
+	                case 5:
+	                	opciones.opcion5(leer);
+	                    break;
+	                case 6:
+	                	menuGestionPasajeros();
+	                    break;
+	                case 7:
+	                	int opcionPropiedades = menuConfigurarAccesoDatos();
+	                	boolean continuarOpciones =true;
+	                	while(continuarOpciones) {
+	                		switch (opcionPropiedades) {
+	            	        case 1:
+	            	        	opciones.opcion7Consultar(leer);
+	            	        	break;
+	            	        case 2:
+	            	        	opciones.opcion7Editar(leer);
+	            	            break;
+	            	        case 3:
+	            	        	return;
+	            	           // break;
+	            	        case 4:
+	            	        	System.out.println("Programa terminado");
+	    	                    continuar=false;
+	            	            break;
+	                		}			
+	                	}
+	                	
+	                    break;
+	                case 8:
 	                	System.out.println("Programa terminado");
 	                    continuar=false;
 	                    break;
@@ -106,6 +137,36 @@ public static int menuGestionPasajeros() {
 	System.out.println("7. Listar todos los pasajeros de un coche");
 	System.out.println("8. Volver al menú principal");
 	System.out.println("9. Terminar el programa");
+	System.out.println("----------------------------------------------------");
+	System.out.println("Introduzca una opción del 1 al 9, si quiere salir 9");
+	System.out.println("----------------------------------------------------");
+	
+	try {
+		opcion = leer.nextInt();
+		
+	} catch (java.util.InputMismatchException e) {
+        // Atrapar la excepción si se ingresa algo que no es un entero
+        System.out.println("Entrada no válida. Ingrese un número entero.");
+        leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
+    }
+	
+	if (opcion<1 || opcion > 9) {
+		System.out.println("OPCION INCORRECTA");
+	}
+	
+	return opcion;	
+	}
+
+public static int menuConfigurarAccesoDatos() {
+	
+	int opcion = 0;
+	System.out.println("----------------------------------------------------");
+	System.out.println("|            MENU  ACCESO A DATOS	               |");
+	System.out.println("----------------------------------------------------");
+	System.out.println("1. Consultar datos de acceso");
+	System.out.println("2. Editar datos de acceso ");
+	System.out.println("3. Volver al menú principal");
+	System.out.println("4. Terminar el programa");
 	System.out.println("----------------------------------------------------");
 	System.out.println("Introduzca una opción del 1 al 9, si quiere salir 9");
 	System.out.println("----------------------------------------------------");

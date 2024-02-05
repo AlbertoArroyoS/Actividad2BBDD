@@ -190,7 +190,11 @@ public class OpcionesVistaPrincipal {
 		}	
 	}
 	
-	public void opcion6Consultar(Scanner leer) {
+	public void opcion6(Scanner leer) {
+		
+	}
+	
+	public void opcion7Consultar(Scanner leer) {
 		
 		System.out.println("url:"+ gestor.obtenerPropiedades("url"));
 		System.out.println("nombreBBDD:"+gestor.obtenerPropiedades("nombreBBDD"));
@@ -199,38 +203,97 @@ public class OpcionesVistaPrincipal {
 	
 	}
 	
-	public void opcion6Editar(Scanner leer) {
-		gestor.cambiarPropiedad(null, null);
-	}
 	
-	public void opcion7(Scanner leer) {
+	
+	public void opcion7Editar(Scanner leer) {
+		System.out.println("Elija propiedad a cambiar");
+		System.out.println("1. url");
+		System.out.println("2. nombreBBDD ");
+		System.out.println("3. usuario");
+		System.out.println("4. password");
+		System.out.println("5. nueva propiedad");
+		String clave;
+		String valor;
+		int opcion;
+		boolean continuar=true;
+		while(continuar) {
+			try {
+				opcion = leer.nextInt();
+				switch (opcion) {
+			        case 1:
+			        	System.out.println("Introduzca nuevo valor de la url:");
+			        	clave="url";
+			        	valor="";
+			        	break;
+			        case 2:
+			        	System.out.println("Introduzca nuevo valor del nombreBBDD:");
+			        	clave="nombreBBDD";
+			        	valor="";
+			        	break;
+			        case 3:
+			        	System.out.println("Introduzca nuevo valor del usuario:");
+			        	clave="usuario";
+			        	valor="";
+			        	break;
+			        case 4:
+			        	System.out.println("Introduzca nuevo valor del password:");
+			        	clave="password";
+			        	valor="";
+			        	break;
+			        case 5:
+			        	System.out.println("Introduzca nueva clave:");
+			        	clave=leer.next();
+			        	System.out.println("Introduzca nuevo valor:");
+			        	valor=leer.next();
+			        	break;
+			        default:
+			        	System.out.println("Introduzca un valor correcto");
+			        	break;
+				}
+				gestor.cambiarPropiedad(null, null);
+				continuar=false;
+				
+			} catch (java.util.InputMismatchException e) {
+		        System.out.println("Entrada no válida. Ingrese un número entero.");
+		        leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
+		    }
+		}
+	
 		
 	}
 	
 	
 	
+	
+	
 	/**
-     * Inicia el programa, llamando al método para crear el archivo y muestra mensajes según el resultado.
+     * Inicia el programa, llamando al método para conectarse a la BBDD y crear
+     * la base de datos y la tabla en caso de que no exista. Y accede al fichero
+     * properties que contiene los datos para la conexion.
+     * Muestra mensajes según el resultado.
      */
 	public void iniciarPrograma() {
-		int crearFichero= gestor.iniciarFichero();
-		switch (crearFichero) {
+		int accesoADatos= gestor.iniciarAccesoADatos();
+
+		switch (accesoADatos) {
 	        case 1://login del usuario, lectura del archivo
 	        	//System.out.println("Creado el archivo");
-	        	System.out.println("Conexion correcta");
+	        	System.out.println("Conexion correcta a datos");
 	            break;
 	        case 2://nuevo usuario, escritura del archivo si no existe ya
-	        	System.out.println("Error al crear el archivo");
-	            break;
-	        case 3:
-	        	System.out.println("El archivo ya existe");
+	        	System.out.println("Error al iniciar la BBDD");
 	            break;
 
 		}
+		boolean accesoAPropiedades=gestor.iniciarPropiedades();
+		if (accesoAPropiedades) {
+			System.out.println("Acceso a propiedades correcto");
+		}else {
+			System.out.println("Error al acceder a propiedades");
+		}
+	}
 	
-	
-	
-	
+
 	
 	//metodos propios
 	public Coche introducirDatos(Scanner leer) {

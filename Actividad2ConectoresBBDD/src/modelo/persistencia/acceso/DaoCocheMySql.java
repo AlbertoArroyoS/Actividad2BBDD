@@ -255,7 +255,6 @@ public class DaoCocheMySql implements DaoCoche{
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return 2;
 		}
 		return 1;
