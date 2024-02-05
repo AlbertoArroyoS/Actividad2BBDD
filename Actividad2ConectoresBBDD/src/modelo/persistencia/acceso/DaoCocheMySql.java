@@ -101,7 +101,7 @@ public class DaoCocheMySql implements DaoCoche{
 	 * 
 	 * @return Entero que indica el resultado de la operación:
 	 *         - <b>0</b> no se ha dado de alta ningun coche
-	 *         - <b>1</b> si se ha añadido correctamente
+	 *         - <b>1</b> se ha eliminado correctamente
 	 *         - <b>2</b> si hay un error al establecer la conexion
 	 *         - <b>3</b> error de Excepcion
 	 */
