@@ -32,5 +32,17 @@ public class ConfiguracionPropiedades {
 	public String getProperty(String key) {
 		return properties.getProperty(key);
 	}
+	
+	/**
+	 * Método para cambiar los valores de las propiedades
+	 * @param key la clave de la propiedad, value el valor de la propiedad
+	 * @return valor de la propiedad. Null en caso de que no exista.
+	 */
+	public void setProperty(String key, String value) {
+		properties.setProperty(key, value);
+	}
+	
+	
+	
 
 }

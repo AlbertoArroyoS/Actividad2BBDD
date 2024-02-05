@@ -25,7 +25,7 @@ public class VistaPrincipal {
         	//Cargamos el menu inicial y recuperamos la opción elegida
 			int opcion = menu();
 			//Si la opcion está fuera del rango de opciones se repetira el menu
-			while (opcion<1 || opcion>7){
+			while (opcion<1 || opcion>8){
 				opcion = menu();
 			}
 
@@ -67,10 +67,11 @@ public static int menu() {
 	System.out.println("1. Añadir nuevo coche");
 	System.out.println("2. Borrar coche ");
 	System.out.println("3. Consulta coche ");
-	System.out.println("4. Listado de coches");
-	System.out.println("5. Gestión de pasajeros");
-	System.out.println("6. Configurar usuario BBDD");
-	System.out.println("7. Terminar el programa");
+	System.out.println("4. Modificar coche ");
+	System.out.println("5. Listado de coches");
+	System.out.println("6. Gestión de pasajeros");
+	System.out.println("7. Configurar usuario BBDD");
+	System.out.println("8. Terminar el programa");
 	System.out.println("----------------------------------------------------");
 	System.out.println("Introduzca una opción del 1 al 7, si quiere salir 7");
 	System.out.println("----------------------------------------------------");
@@ -84,7 +85,7 @@ public static int menu() {
         leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
     }
 	
-	if (opcion<1 || opcion > 7) {
+	if (opcion<1 || opcion > 8) {
 		System.out.println("OPCION INCORRECTA");
 	}
 	
