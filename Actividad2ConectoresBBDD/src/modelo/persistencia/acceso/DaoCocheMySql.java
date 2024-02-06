@@ -113,7 +113,7 @@ public class DaoCocheMySql implements DaoCoche{
 	 * Método para eliminar un coche por su id
 	 * 
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha dado de alta ningun coche
+	 *         - <b>0</b> no se ha borrado ningun coche
 	 *         - <b>1</b> se ha eliminado correctamente
 	 *         - <b>2</b> si hay un error al establecer la conexion
 	 *         - <b>3</b> error de Excepcion
@@ -129,7 +129,7 @@ public class DaoCocheMySql implements DaoCoche{
 			ps = conexion.prepareStatement(sql);
 			ps.setInt(1, id);
 			filas = ps.executeUpdate();
-			filas=1;
+			//filas=1;
 		} catch (SQLException e) {
 			filas=3;
 			return filas;

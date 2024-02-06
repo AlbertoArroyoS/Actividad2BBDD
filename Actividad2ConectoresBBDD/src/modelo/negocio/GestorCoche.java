@@ -22,25 +22,15 @@ public class GestorCoche {
 	 * @param usuario El objeto Coche a ser validado.
 	 * @return Entero que indica el resultado de la validación:
 	 *         - 0 si la validacion no ha dado ningun problema
-	 *         - 1 si la marca está vacia
-	 *         - 2 si el modelo está vacio
-	 *         - 3 si la marca y el modelo estan vacios
+	 *         - 1 si el string pasado por parametro esta vacio o solo tiene espacios
 	 */
-	public int validarCoche(Coche coche) {
-		int resultadoValidacion = 0;
+	public boolean validarCampoVacio(String opcion) {
+		if(opcion.isBlank()) {
+			return true;
+		}else {
+			return false;
+		}
 		
-		if(coche.getMarca().isEmpty()) {
-			resultadoValidacion = 1;
-			
-		}
-		if(coche.getModelo().isEmpty()) {
-			resultadoValidacion = 2;
-			
-		}if(coche.getModelo().isEmpty() && coche.getMarca().isEmpty()) {
-			resultadoValidacion = 3;
-			
-		}
-		return resultadoValidacion;
 	}
 	
 	/**
@@ -61,7 +51,7 @@ public class GestorCoche {
 	 * Método para eliminar un coche por su id
 	 * 
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha dado de alta ningun coche
+	 *         - <b>0</b> no se ha borrado ningun coche
 	 *         - <b>1</b> se ha eliminado correctamente
 	 *         - <b>2</b> si hay un error al establecer la conexion
 	 *         - <b>3</b> error de Excepcion
