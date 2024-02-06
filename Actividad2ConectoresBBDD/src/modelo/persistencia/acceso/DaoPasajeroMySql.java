@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
 import modelo.persistencia.interfaces.DaoPasajero;
 
@@ -18,6 +19,7 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		private Connection conexion;
 		private PreparedStatement ps;
 		private ResultSet rs;
+		private Coche coche;
 
 	@Override
 	public int altaPasajero(Pasajero pasajero) {
@@ -45,8 +47,6 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}finally{
-			cerrarConexion();
 		}
 		
 		return filas;

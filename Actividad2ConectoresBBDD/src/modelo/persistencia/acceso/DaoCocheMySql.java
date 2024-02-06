@@ -315,17 +315,18 @@ public class DaoCocheMySql implements DaoCoche{
             );
         }
     }
+    
     // Método para crear la tabla de pasajeros
     private static void crearTablaPasajeros(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de pasajeros si no existe
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Pasajeros (" +
-                    "id_pasajero INT PRIMARY KEY AUTO_INCREMENT," +
-                    "nombre VARCHAR(255) NOT NULL," +
-                    "edad INT NOT NULL," +
-                    "peso DECIMAL(5,2) NOT NULL," +
-                    "usuario_id INT," +  // Nueva columna para la clave externa
-                    "FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)" +  // Definir la clave externa
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Pasajeros (" 
+                   + "id INT PRIMARY KEY AUTO_INCREMENT," 
+                   + "nombre VARCHAR(255) NOT NULL," 
+                   + "edad INT NOT NULL," 
+                   + "peso DECIMAL(5,2) NOT NULL," 
+                   + "usuario_id INT," +  // Nueva columna para la clave externa
+                    "FOREIGN KEY (usuario_id) REFERENCES coches(id)" +  // Definir la clave externa
                     ")"
             );
         }
