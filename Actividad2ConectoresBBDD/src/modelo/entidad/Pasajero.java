@@ -1,7 +1,11 @@
 package modelo.entidad;
 
 public class Pasajero {
-
+	
+	/* Tipo de relacion
+	Un coche puede tener muchos pasajeros (N).
+	Un pasajero solo puede estar en un coche a la vez (1).
+*/
 	private int id_pasajero;
 	private String nombre;
 	private int edad;

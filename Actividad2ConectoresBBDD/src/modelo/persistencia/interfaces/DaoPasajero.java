@@ -12,6 +12,7 @@ public interface DaoPasajero {
 	List<Pasajero> buscarTodosPasajeros();
 	int addPasajeroCoche(Pasajero pasajero);
 	int eliminarPasajeroCoche(Pasajero pasajero);
+	List<Pasajero> pasajerosEnCoche(int idCoche);
 	
 
 }

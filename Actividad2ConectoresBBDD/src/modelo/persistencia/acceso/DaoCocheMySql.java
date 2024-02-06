@@ -36,32 +36,14 @@ import modelo.persistencia.interfaces.DaoCoche;
 public class DaoCocheMySql implements DaoCoche{
 	
 	
-
-
-
-	/*
-	private static String url = "jdbc:mysql://localhost:3306/";
-	private static String nombreBBDD = "GestionCochesActividad2Alberto";
-	private static String usuario = "root";
-	private static String password = "";
-	*/
-	/*
-	String url=conf.getProperty("url").toString();
-	String usuario = conf.getProperty("usuario").toString();
-	String password = conf.getProperty("password").toString();
-	String nombreBBDD =conf.getProperty("nombreBBDD").toString();
-*/
 	
-	
-	//Obtenemos del fichero de propiedades los valores para la conexion a la BBDD
-	
-
 	//variables
 	private int filas = 0;
 	private String sql;
 	private Connection conexion;
 	private PreparedStatement ps;
 	private ResultSet rs;
+	
 	
 	//1
 	/**
@@ -79,16 +61,12 @@ public class DaoCocheMySql implements DaoCoche{
 			filas = 2;
 			return filas;
 		}
-		/*
-		sql = "insert into coches values(?,?,?,?)";
-		*/
 
 		sql = "insert into coches (MARCA,MODELO,AÑO_FABRICACION,KILOMETROS) "
 				+ " values(?,?,?,?)";
 		filas = 0;
-		try {
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			//preparamos la query con valores parametrizables(?)
-			ps = conexion.prepareStatement(sql);
 			ps.setString(1, coche.getMarca());
 			ps.setString(2, coche.getModelo());
 			ps.setInt(3, coche.getFabYear());
@@ -102,10 +80,7 @@ public class DaoCocheMySql implements DaoCoche{
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}finally{
-			cerrarConexion();
 		}
-		
 		return filas;
 	}
 	//2
@@ -125,18 +100,14 @@ public class DaoCocheMySql implements DaoCoche{
 			return filas;
 		}		
 		sql = "delete from COCHES where ID = ?";
-		try {
-			ps = conexion.prepareStatement(sql);
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			filas = ps.executeUpdate();
 			//filas=1;
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}finally{
-			cerrarConexion();
-		}
-		
+		}		
 		return filas;
 	}
 	//3
@@ -155,8 +126,7 @@ public class DaoCocheMySql implements DaoCoche{
 		sql = "select * from COCHES where ID = ?";
 		Coche coche = null;
 		
-		try {
-			ps = conexion.prepareStatement(sql);
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			//Como solo hay 1 ?
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
@@ -170,8 +140,6 @@ public class DaoCocheMySql implements DaoCoche{
 			}
 		} catch (SQLException e) {
 			return null;
-		}finally {
-			cerrarConexion();
 		}
 		return coche;
 	}
@@ -194,8 +162,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		sql = "update COCHES set MARCA = ?, MODELO = ?, AÑO_FABRICACION = ?, KILOMETROS = ?"
 				+ " where ID = ?";
-		try {
-			ps = conexion.prepareStatement(sql);	
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {	
 			ps.setString(1, coche.getMarca());
 			ps.setString(2, coche.getModelo());
 			ps.setInt(3, coche.getFabYear());
@@ -206,8 +173,6 @@ public class DaoCocheMySql implements DaoCoche{
 		} catch (SQLException e) {
 			filas=3;
 			return filas;
-		}finally{
-			cerrarConexion();
 		}
 		
 		return filas;
@@ -226,8 +191,7 @@ public class DaoCocheMySql implements DaoCoche{
 		sql = "select * from COCHES";
 		List<Coche> lista = new ArrayList<>();
 		Coche coche = null;
-		try {
-			ps = conexion.prepareStatement(sql); 
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				coche = new Coche();
@@ -240,8 +204,6 @@ public class DaoCocheMySql implements DaoCoche{
 			}
 		} catch (SQLException e) {
 			return null;			
-		}finally {
-			cerrarConexion();
 		}
 		return lista;
 	}
@@ -271,6 +233,7 @@ public class DaoCocheMySql implements DaoCoche{
             try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, usuario, password)) {
                 // Crear la tabla de usuarios
                 crearTablaUsuarios(conexionBD);
+                crearTablaPasajeros(conexionBD);
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -307,7 +270,7 @@ public class DaoCocheMySql implements DaoCoche{
 	 * @return - <b>true</b> si la conexión se cerró correctamente
 	 *         - <b>false</b> false en caso de error.
 	 */
-	public boolean cerrarConexion(){
+	/*public boolean cerrarConexion(){
 		try {
 			conexion.close();
 		} catch (SQLException e) {
@@ -315,7 +278,7 @@ public class DaoCocheMySql implements DaoCoche{
 			return false;
 		}
 		return true;
-	}
+	}*/
 	//9
 	 /**
      * Crea una base de datos utilizando la conexión proporcionada si no existe.
@@ -352,13 +315,20 @@ public class DaoCocheMySql implements DaoCoche{
             );
         }
     }
-   /*
-    CREATE TABLE Coches_Pasajeros (
-    	    id_coche INT,
-    	    id_pasajero INT,
-    	    PRIMARY KEY (id_coche, id_pasajero),
-    	    FOREIGN KEY (id_coche) REFERENCES Coches(id_coche),
-    	    FOREIGN KEY (id_pasajero) REFERENCES Pasajeros(id_pasajero)
-    	);*/
+    // Método para crear la tabla de pasajeros
+    private static void crearTablaPasajeros(Connection conexion) throws SQLException {
+        try (Statement statement = conexion.createStatement()) {
+            // Crear la tabla de pasajeros si no existe
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Pasajeros (" +
+                    "id_pasajero INT PRIMARY KEY AUTO_INCREMENT," +
+                    "nombre VARCHAR(255) NOT NULL," +
+                    "edad INT NOT NULL," +
+                    "peso DECIMAL(5,2) NOT NULL," +
+                    "usuario_id INT," +  // Nueva columna para la clave externa
+                    "FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)" +  // Definir la clave externa
+                    ")"
+            );
+        }
+    }
 
 }
