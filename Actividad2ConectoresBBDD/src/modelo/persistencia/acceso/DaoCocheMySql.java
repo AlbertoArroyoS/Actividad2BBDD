@@ -35,19 +35,27 @@ import modelo.persistencia.interfaces.DaoCoche;
  */
 public class DaoCocheMySql implements DaoCoche{
 	
-	static ConfiguracionPropiedades configuracion = new ConfiguracionPropiedades();
+	
+
+
+
 	/*
 	private static String url = "jdbc:mysql://localhost:3306/";
-	private static String nombreBBDD = "GestionUsuariosLab2";
-	private static String coche = "root";
+	private static String nombreBBDD = "GestionCochesActividad2Alberto";
+	private static String usuario = "root";
 	private static String password = "";
 	*/
-	//Obtenemos del fichero de propiedades los valores para la conexion a la BBDD
-	private static String url = configuracion.getProperty("url");
-	private static String nombreBBDD = configuracion.getProperty("nombreBBDD");
-	private static String coche = configuracion.getProperty("usuario");
-	private static String password = configuracion.getProperty("password");
+	/*
+	String url=conf.getProperty("url").toString();
+	String usuario = conf.getProperty("usuario").toString();
+	String password = conf.getProperty("password").toString();
+	String nombreBBDD =conf.getProperty("nombreBBDD").toString();
+*/
 	
+	
+	//Obtenemos del fichero de propiedades los valores para la conexion a la BBDD
+	
+
 	//variables
 	private int filas = 0;
 	private String sql;
@@ -71,7 +79,12 @@ public class DaoCocheMySql implements DaoCoche{
 			filas = 2;
 			return filas;
 		}
-		sql = "insert into coches values(?,?,?,?,?,?)";
+		/*
+		sql = "insert into coches values(?,?,?,?)";
+		*/
+
+		sql = "insert into coches (MARCA,MODELO,AÑO_FABRICACION,KILOMETROS) "
+				+ " values(?,?,?,?)";
 		filas = 0;
 		try {
 			//preparamos la query con valores parametrizables(?)
@@ -81,7 +94,7 @@ public class DaoCocheMySql implements DaoCoche{
 			ps.setInt(3, coche.getFabYear());
 			ps.setInt(4, coche.getKilometros());
 			filas = ps.executeUpdate();
-			//filas = 1;
+			filas = 1;
 			if(filas == 0) {
 				return filas;
 			}
@@ -111,7 +124,7 @@ public class DaoCocheMySql implements DaoCoche{
 			filas=2;
 			return filas;
 		}		
-		sql = "delete from coches where ID = ?";
+		sql = "delete from COCHES where ID = ?";
 		try {
 			ps = conexion.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -139,7 +152,7 @@ public class DaoCocheMySql implements DaoCoche{
 		if(!abrirConexion()){
 			return null;
 		}		
-		sql = "select * from clientes where ID = ?";
+		sql = "select * from COCHES where ID = ?";
 		Coche coche = null;
 		
 		try {
@@ -244,17 +257,24 @@ public class DaoCocheMySql implements DaoCoche{
 	 */
 	@Override
 	public int accesoADatos() {
+		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
+		String url=conf.getProperty("url").toString();
+		String usuario = conf.getProperty("usuario").toString();
+		String password = conf.getProperty("password").toString();
+		String nombreBBDD =conf.getProperty("nombreBBDD").toString();
+		
 		try {
-			conexion = DriverManager.getConnection(url,coche,password);
+			conexion = DriverManager.getConnection(url,usuario,password);
 			// Crear la base de datos
             crearBaseDeDatos(conexion);
             // Establecer conexión con la base de datos recién creada
-            try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, coche, password)) {
+            try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, usuario, password)) {
                 // Crear la tabla de usuarios
                 crearTablaUsuarios(conexionBD);
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			//e.printStackTrace();
 			return 2;
 		}
 		return 1;
@@ -268,8 +288,13 @@ public class DaoCocheMySql implements DaoCoche{
 	 *         - <b>false</b> false en caso de error.
 	 */
 	public boolean abrirConexion(){
+		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
+		String url=conf.getProperty("url").toString();
+		String usuario = conf.getProperty("usuario").toString();
+		String password = conf.getProperty("password").toString();
+		String nombreBBDD =conf.getProperty("nombreBBDD").toString();
 		try {
-			conexion = DriverManager.getConnection(url+nombreBBDD,coche,password);
+			conexion = DriverManager.getConnection(url+nombreBBDD,usuario,password);
 		} catch (SQLException e) {
 			return false;
 		}
@@ -299,7 +324,9 @@ public class DaoCocheMySql implements DaoCoche{
      * @throws SQLException Si ocurre un error al intentar crear la base de datos.
      * 
      */
-    private static void crearBaseDeDatos(Connection conexion) throws SQLException {
+    private void crearBaseDeDatos(Connection conexion) throws SQLException {
+    	ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
+		String nombreBBDD =conf.getProperty("nombreBBDD").toString();
         try (Statement statement = conexion.createStatement()) {
             // Crear la base de datos si no existe
         	statement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + nombreBBDD);
@@ -325,6 +352,6 @@ public class DaoCocheMySql implements DaoCoche{
             );
         }
     }
-
+    
 
 }

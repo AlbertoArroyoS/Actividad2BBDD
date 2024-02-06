@@ -22,7 +22,7 @@ public class OpcionesVistaPrincipal {
      */
 	public void opcion1(Scanner leer) {
 		
-		Coche cocheAuxiliar = introducirDatos(leer);
+		Coche cocheAuxiliar = introducirDatos();
 		
 		int resultadoValidar = gestor.validarCoche(cocheAuxiliar);
 		String marcaCoche;
@@ -104,6 +104,7 @@ public class OpcionesVistaPrincipal {
 		int idConsultar = leer.nextInt();
 		Coche cocheAuxiliar = gestor.buscarCoche(idConsultar);
 		if(cocheAuxiliar!=null) {
+			System.out.println("-----COCHE ENCONTRADO--------------------");
 			System.out.println("Id: " + cocheAuxiliar.getId());
 			System.out.println("Marca: " + cocheAuxiliar.getMarca());
 			System.out.println("Modelo: " + cocheAuxiliar.getModelo());
@@ -116,7 +117,10 @@ public class OpcionesVistaPrincipal {
 	}
 	
 	public void opcion4(Scanner leer) {
-		Coche cocheAuxiliar = introducirDatos(leer);
+		System.out.println("Indroduzca el ID del coche a modificar:");
+		int idBuscar = leer.nextInt();
+		Coche cocheAuxiliar = introducirDatos();
+		cocheAuxiliar.setId(idBuscar);
 		
 		int resultadoValidar = gestor.validarCoche(cocheAuxiliar);
 		String marcaCoche;
@@ -194,75 +198,16 @@ public class OpcionesVistaPrincipal {
 		
 	}
 	
-	public void opcion7Consultar(Scanner leer) {
-		
+	public void opcion7() {
+		System.out.println("----------------------------------------------------");
+		System.out.println("|                DATOS  ACCESO                     |");
+		System.out.println("----------------------------------------------------");
 		System.out.println("url:"+ gestor.obtenerPropiedades("url"));
 		System.out.println("nombreBBDD:"+gestor.obtenerPropiedades("nombreBBDD"));
 		System.out.println("usuario:"+gestor.obtenerPropiedades("usuario"));
 		System.out.println("password:"+gestor.obtenerPropiedades("password"));
-	
+		System.out.println("----------------------------------------------------");
 	}
-	
-	
-	
-	public void opcion7Editar(Scanner leer) {
-		System.out.println("Elija propiedad a cambiar");
-		System.out.println("1. url");
-		System.out.println("2. nombreBBDD ");
-		System.out.println("3. usuario");
-		System.out.println("4. password");
-		System.out.println("5. nueva propiedad");
-		String clave;
-		String valor;
-		int opcion;
-		boolean continuar=true;
-		while(continuar) {
-			try {
-				opcion = leer.nextInt();
-				switch (opcion) {
-			        case 1:
-			        	System.out.println("Introduzca nuevo valor de la url:");
-			        	clave="url";
-			        	valor="";
-			        	break;
-			        case 2:
-			        	System.out.println("Introduzca nuevo valor del nombreBBDD:");
-			        	clave="nombreBBDD";
-			        	valor="";
-			        	break;
-			        case 3:
-			        	System.out.println("Introduzca nuevo valor del usuario:");
-			        	clave="usuario";
-			        	valor="";
-			        	break;
-			        case 4:
-			        	System.out.println("Introduzca nuevo valor del password:");
-			        	clave="password";
-			        	valor="";
-			        	break;
-			        case 5:
-			        	System.out.println("Introduzca nueva clave:");
-			        	clave=leer.next();
-			        	System.out.println("Introduzca nuevo valor:");
-			        	valor=leer.next();
-			        	break;
-			        default:
-			        	System.out.println("Introduzca un valor correcto");
-			        	break;
-				}
-				gestor.cambiarPropiedad(null, null);
-				continuar=false;
-				
-			} catch (java.util.InputMismatchException e) {
-		        System.out.println("Entrada no válida. Ingrese un número entero.");
-		        leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
-		    }
-		}
-	
-		
-	}
-	
-	
 	
 	
 	
@@ -273,8 +218,14 @@ public class OpcionesVistaPrincipal {
      * Muestra mensajes según el resultado.
      */
 	public void iniciarPrograma() {
+		
+		boolean accesoAPropiedades=gestor.iniciarPropiedades();
+		if (accesoAPropiedades) {
+			System.out.println("Acceso a propiedades correcto");
+		}else {
+			System.out.println("Error al acceder a propiedades");
+		}
 		int accesoADatos= gestor.iniciarAccesoADatos();
-
 		switch (accesoADatos) {
 	        case 1://login del usuario, lectura del archivo
 	        	//System.out.println("Creado el archivo");
@@ -285,32 +236,28 @@ public class OpcionesVistaPrincipal {
 	            break;
 
 		}
-		boolean accesoAPropiedades=gestor.iniciarPropiedades();
-		if (accesoAPropiedades) {
-			System.out.println("Acceso a propiedades correcto");
-		}else {
-			System.out.println("Error al acceder a propiedades");
-		}
+		
 	}
 	
 
 	
 	//metodos propios
-	public Coche introducirDatos(Scanner leer) {
-		
-		Coche cocheAuxiliar = new Coche();
-		System.out.println("Marca:");
-		String marcaCoche = leer.nextLine();
+	public Coche introducirDatos() {
+		Scanner leer = new Scanner(System.in);
+		Coche cocheAuxiliar = new Coche();		
+		System.out.println("Marca:");		
+		String marcaCoche = leer.nextLine();		
 		System.out.println("Modelo:");
 		String modeloCoche = leer.nextLine();
 		System.out.println("Año de fabricación:");
 		int fabYear = leer.nextInt();
-		System.out.println("Año de fabricación:");
+		System.out.println("Kilometros:");
 		int kilometros = leer.nextInt();
 		cocheAuxiliar.setMarca(marcaCoche);
 		cocheAuxiliar.setModelo(modeloCoche);
 		cocheAuxiliar.setFabYear(fabYear);
 		cocheAuxiliar.setKilometros(kilometros);
+		//System.out.println(cocheAuxiliar);
 		
 		return cocheAuxiliar;
 	}

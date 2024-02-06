@@ -10,7 +10,9 @@ import modelo.persistencia.interfaces.DaoCoche;
 public class GestorCoche {
 	
 	private DaoCoche daoCoche = new DaoCocheMySql();
-	private ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
+	
+	
+	
 	
 	//validar datos introducidos del coche
 
@@ -105,14 +107,12 @@ public class GestorCoche {
 	}
 	
 	public String obtenerPropiedades(String propiedad) {
-		conf.getProperty(propiedad);
-		return null;
+    	ConfiguracionPropiedades configuracion = new ConfiguracionPropiedades();
+
+		return configuracion.getProperty(propiedad);
 		
 	}
-	public void cambiarPropiedad(String propiedad, String valor) {
-		conf.setProperty(propiedad, propiedad);
-		
-	}
+
 	/**
 	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
 	 * crear la base de datos en caso que que no exista y al metodo para crear
@@ -131,6 +131,7 @@ public class GestorCoche {
 	 * @return true si la conexion ha sido correcta y false en caso de que no
 	 */
 	public boolean iniciarPropiedades() {
+		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
 		boolean configuracion=conf.inicializarPropiedades();
 		return configuracion;
 	}

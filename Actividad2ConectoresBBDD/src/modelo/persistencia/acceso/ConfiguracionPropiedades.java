@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class ConfiguracionPropiedades {
 	
-	private Properties properties;
+	public static Properties properties;
 	
 	public boolean inicializarPropiedades() {
 		//Esta manera es cuando queremos acceder a un fichero properties que esta
@@ -18,11 +18,13 @@ public class ConfiguracionPropiedades {
 			properties = new Properties();
 			//Cargamos en el objeto properties, todos los valores del fichero
 			properties.load(ficheroPropiedades);
+			
 		} catch (IOException e) {
 			return false;
 		}
 		return true;
 	}
+
 	
 	/**
      * Método que devuelve un valor de una propiedad a partir de la clave
@@ -31,24 +33,12 @@ public class ConfiguracionPropiedades {
      * @return valor de la propiedad. Null en caso de que no exista.
      */
     public String getProperty(String key) {
-        if (properties != null && properties.getProperty(key) != null) {
-            return properties.getProperty(key);
-        } else {
-            return null;
-        }
+    	return properties.getProperty(key);
+    		
     }
 
-    /**
-     * Método para cambiar los valores de las propiedades
-     *
-     * @param key   la clave de la propiedad, value el valor de la propiedad
-     */
-    public void setProperty(String key, String value) {
-        if (properties != null) {
-            properties.setProperty(key, value);
-        }
-    }
-	
+
+
 	
 	
 
