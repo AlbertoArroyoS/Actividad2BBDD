@@ -352,6 +352,13 @@ public class DaoCocheMySql implements DaoCoche{
             );
         }
     }
-    
+   /*
+    CREATE TABLE Coches_Pasajeros (
+    	    id_coche INT,
+    	    id_pasajero INT,
+    	    PRIMARY KEY (id_coche, id_pasajero),
+    	    FOREIGN KEY (id_coche) REFERENCES Coches(id_coche),
+    	    FOREIGN KEY (id_pasajero) REFERENCES Pasajeros(id_pasajero)
+    	);*/
 
 }

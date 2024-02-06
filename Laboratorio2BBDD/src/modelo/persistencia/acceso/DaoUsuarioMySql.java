@@ -147,6 +147,7 @@ public class DaoUsuarioMySql implements DaoUsuario{
             try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, usuario, password)) {
                 // Crear la tabla de usuarios
                 crearTablaUsuarios(conexionBD);
+                crearTablaPasajeros(conexionBD);
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -203,10 +204,24 @@ public class DaoUsuarioMySql implements DaoUsuario{
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de usuarios si no existe
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS Usuarios ("
-                   // + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
                     + "nombre VARCHAR(50) NOT NULL,"
                     + "password VARCHAR(50) NOT NULL,"
                     + "edad INT NOT NULL)"
+            );
+        }
+    }
+    
+ // Método para crear la tabla de pasajeros
+    private static void crearTablaPasajeros(Connection conexion) throws SQLException {
+        try (Statement statement = conexion.createStatement()) {
+            // Crear la tabla de usuarios si no existe
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS Pasajeros (" +
+                    "id_pasajero INT PRIMARY KEY AUTO_INCREMENT," +
+                    "nombre VARCHAR(255) NOT NULL," +
+                    "edad INT NOT NULL," +
+                    "peso DECIMAL(5,2) NOT NULL" +
+                    ")"
             );
         }
     }
