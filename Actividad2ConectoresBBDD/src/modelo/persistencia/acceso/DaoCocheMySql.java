@@ -41,7 +41,6 @@ public class DaoCocheMySql implements DaoCoche{
 	private int filas = 0;
 	private String sql;
 	private Connection conexion;
-	private PreparedStatement ps;
 	private ResultSet rs;
 	
 	
@@ -86,6 +85,8 @@ public class DaoCocheMySql implements DaoCoche{
 	//2
 	/**
 	 * Método para eliminar un coche por su id
+	 * 
+	 * @param id representa el id del pasajero que vamos a eliminar
 	 * 
 	 * @return Entero que indica el resultado de la operación:
 	 *         - <b>0</b> no se ha borrado ningun coche
@@ -232,8 +233,13 @@ public class DaoCocheMySql implements DaoCoche{
             // Establecer conexión con la base de datos recién creada
             try (Connection conexionBD = DriverManager.getConnection(url + nombreBBDD, usuario, password)) {
                 // Crear la tabla de usuarios
+            	
                 crearTablaUsuarios(conexionBD);
                 crearTablaPasajeros(conexionBD);
+                //llamo al metodo para crear la relacion entre las tablas
+                
+                crearRelacionForeignKey(conexionBD);
+                
             }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -305,14 +311,15 @@ public class DaoCocheMySql implements DaoCoche{
      */
     private static void crearTablaUsuarios(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
-            // Crear la tabla de usuarios si no existe
+            // Crear la tabla de coches si no existe
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS coches ("
                     + "id INT AUTO_INCREMENT PRIMARY KEY,"
                     + "marca VARCHAR(50) NOT NULL,"
                     + "modelo VARCHAR(50) NOT NULL,"
                     + "año_fabricacion INT NOT NULL,"
-                    + "kilometros INT NOT NULL)"
-            );
+                    + "kilometros INT NOT NULL,"
+                    + "id_pasajero INT"
+                    + ")");
         }
     }
     
@@ -324,12 +331,20 @@ public class DaoCocheMySql implements DaoCoche{
                    + "id INT PRIMARY KEY AUTO_INCREMENT," 
                    + "nombre VARCHAR(255) NOT NULL," 
                    + "edad INT NOT NULL," 
-                   + "peso DECIMAL(5,2) NOT NULL," 
-                   + "usuario_id INT," +  // Nueva columna para la clave externa
-                    "FOREIGN KEY (usuario_id) REFERENCES coches(id)" +  // Definir la clave externa
-                    ")"
-            );
+                   + "peso DECIMAL(5,2) NOT NULL"
+                   + ")");
         }
     }
-
+    
+    private static void crearRelacionForeignKey(Connection conexion) throws SQLException {
+        try (Statement statement = conexion.createStatement()) {
+            // Crear la relación de clave externa si no existe
+            statement.executeUpdate("ALTER TABLE coches "
+                    + "ADD CONSTRAINT fk_pasajero "
+                    + "FOREIGN KEY (id_pasajero) "
+                    + "REFERENCES Pasajeros(id)");
+        }
+    }
 }
+// + "FOREIGN KEY (id_pasajero) REFERENCES Pasajeros(id)"
+

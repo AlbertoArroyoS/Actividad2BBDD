@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import modelo.entidad.Coche;
@@ -19,8 +20,18 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		private Connection conexion;
 		private PreparedStatement ps;
 		private ResultSet rs;
-		private Coche coche;
 
+
+	//1
+	/**
+	 * Método para dar de alta un pasajero en la Base de datos que recibimos por parametro
+	 * 
+	 * @return Entero que indica el resultado de la operación:
+	 *         - <b>0</b> no se ha dado de alta ningun coche
+	 *         - <b>1</b> si se ha añadido correctamente
+	 *         - <b>2</b> si hay un error al establecer la conexion
+	 *         - <b>3</b> error de Excepcion
+	 */
 	@Override
 	public int altaPasajero(Pasajero pasajero) {
 		if(!abrirConexion()){
@@ -28,16 +39,15 @@ public class DaoPasajeroMySql implements DaoPasajero{
 			return filas;
 		}
 
-		sql = "insert into coches (MARCA,MODELO,AÑO_FABRICACION,KILOMETROS) "
+		sql = "insert into pasajeros (NOMBRE,EDAD,PESO,ID_COCHE) "
 				+ " values(?,?,?,?)";
 		filas = 0;
-		try {
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			//preparamos la query con valores parametrizables(?)
-			ps = conexion.prepareStatement(sql);
-			ps.setString(1, coche.getMarca());
-			ps.setString(2, coche.getModelo());
-			ps.setInt(3, coche.getFabYear());
-			ps.setInt(4, coche.getKilometros());
+			ps.setString(1, pasajero.getNombre());
+			ps.setInt(2, pasajero.getEdad());
+			ps.setDouble(3, pasajero.getPeso());
+			ps.setInt(4, pasajero.getCoche().getId());
 			filas = ps.executeUpdate();
 			filas = 1;
 			if(filas == 0) {
@@ -48,32 +58,121 @@ public class DaoPasajeroMySql implements DaoPasajero{
 			filas=3;
 			return filas;
 		}
-		
 		return filas;
 	}
-
+	
+	//2
+	/**
+	 * Método para eliminar un pasajero por su id
+	 * 
+	 * @param id representa el id del pasajero que vamos a
+	 * hacer la busqueda.
+	 * 
+	 * @return Entero que indica el resultado de la operación:
+	 *         - <b>0</b> no se ha borrado ningun coche
+	 *         - <b>1</b> se ha eliminado correctamente
+	 *         - <b>2</b> si hay un error al establecer la conexion
+	 *         - <b>3</b> error de Excepcion
+	 */
 	@Override
 	public int eliminarPasajero(int idPasajero) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!abrirConexion()){
+			filas=2;
+			return filas;
+		}		
+		sql = "delete from PASAJEROS where ID = ?";
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+			ps.setInt(1, idPasajero);
+			filas = ps.executeUpdate();
+			//filas=1;
+		} catch (SQLException e) {
+			filas=3;
+			return filas;
+		}		
+		return filas;
 	}
-
+	//3
+	/**
+	 * Método que devuelve un objeto pasajero a partir de su id
+	 * @param id representa el id del pasajero que vamos a
+	 * hacer la busqueda.
+	 * @return - <b>el objeto pasajero</b> si existe en la base de datos
+	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 */
 	@Override
 	public Pasajero buscarPasajero(int idPasajero) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!abrirConexion()){
+			return null;
+		}		
+		sql = "select * from COCHES where ID = ?";
+		Pasajero pasajero = null;
+		
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+			//Como solo hay 1 ?
+			ps.setInt(1, idPasajero);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				pasajero = new Pasajero();
+				pasajero.setId_pasajero(rs.getInt("ID"));
+				pasajero.setNombre(rs.getString("NOMBRE"));
+				pasajero.setEdad(rs.getInt("EDAD"));
+				pasajero.setPeso(rs.getDouble("Peso"));
+				pasajero.getCoche().setId(rs.getInt("ID_COCHE"));
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+		return pasajero;
 	}
-
+	/**
+	 * Método que devuelve una lista de pasajeros
+	 * @return - <b>List<Pasajero>
+	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 */
 	@Override
 	public List<Pasajero> buscarTodosPasajeros() {
-		// TODO Auto-generated method stub
-		return null;
+		if(!abrirConexion()){
+			return null;
+		}	
+		sql = "select * from PASAJEROS";
+		List<Pasajero> lista = new ArrayList<>();
+		Pasajero pasajero = null;
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				pasajero = new Pasajero();
+				pasajero.setId_pasajero(rs.getInt("ID"));
+				pasajero.setNombre(rs.getString("NOMBRE"));
+				pasajero.setEdad(rs.getInt("EDAD"));
+				pasajero.setPeso(rs.getDouble("Peso"));
+				pasajero.getCoche().setId(rs.getInt("ID_COCHE"));
+				lista.add(pasajero);
+			}
+		} catch (SQLException e) {
+			return null;			
+		}
+		return lista;
 	}
 
 	@Override
 	public int addPasajeroCoche(Pasajero pasajero) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!abrirConexion()){
+			filas=2;
+			return filas;
+		}
+		sql = "update PASAJEROS set ID_COCHE = ?"
+				+ " where ID = ?";
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {	
+			ps.setInt(1, pasajero.getCoche().getId());
+			ps.setInt(2, pasajero.getId_pasajero());
+			filas = ps.executeUpdate();
+			filas=1;
+		} catch (SQLException e) {
+			filas=3;
+			return filas;
+		}
+		
+		return filas;
 	}
 
 	@Override

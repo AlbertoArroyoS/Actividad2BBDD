@@ -3,8 +3,8 @@ package modelo.entidad;
 public class Pasajero {
 	
 	/* Tipo de relacion
-	Un coche puede tener muchos pasajeros (N).
-	Un pasajero solo puede estar en un coche a la vez (1).
+	Un coche puede tener varios pasajeros asociados, 
+	pero cada pasajero está asociado a un solo coche
 */
 	private int id_pasajero;
 	private String nombre;
