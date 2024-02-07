@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.entidad.Coche;
+import modelo.entidad.Pasajero;
 import modelo.persistencia.interfaces.DaoCoche;
 
 /**
@@ -398,30 +399,33 @@ public class DaoCocheMySql implements DaoCoche{
 			return null;
 		}	
     	List<Coche> listaAuxiliar = new ArrayList<>();
-        String sql = "SELECT c.id AS id_coche, c.marca, c.modelo, c.año_fabricacion, c.kilometros, p.id AS id_pasajero, p.nombre, p.edad, p.peso " +
-                     "FROM coches c LEFT JOIN pasajeros p ON c.id_pasajero = p.id";
+    	String sql = "SELECT c.id AS id_coche, c.marca, c.modelo, c.año_fabricacion, c.kilometros, p.id AS id_pasajero, p.nombre, p.edad, p.peso " +
+                "FROM coches c LEFT JOIN pasajeros p ON c.id_pasajero = p.id " +
+                "WHERE c.id_pasajero IS NOT NULL";
         Coche coche = null;
         try (PreparedStatement pstmt = conexion.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
             	coche = new Coche();
-              	coche.setId(rs.getInt("ID"));
-  				coche.setMarca(rs.getString("MARCA"));
-  				coche.setModelo(rs.getString("MODELO"));
-  				coche.setFabYear(rs.getInt("AÑO_FABRICACION"));
-  				coche.setKilometros(rs.getInt("KILOMETROS"));
+              	coche.setId(rs.getInt(1));
+  				coche.setMarca(rs.getString(2));
+  				coche.setModelo(rs.getString(3));
+  				coche.setFabYear(rs.getInt(4));
+  				coche.setKilometros(rs.getInt(5));
+  				
+  			// Inicializar un nuevo objeto Pasajero
+  			    Pasajero pasajero = new Pasajero();
+  			    pasajero.setId_pasajero(rs.getInt(6));
+  			    pasajero.setNombre(rs.getString(7));
+  			    pasajero.setEdad(rs.getInt(8));
+  			    pasajero.setPeso(rs.getDouble(9));
 
-                int idPasajero = rs.getInt("id_pasajero");
-                String nombrePasajero = rs.getString("nombre");
-                int edadPasajero = rs.getInt("edad");
-                double pesoPasajero = rs.getDouble("peso");
-                
-                coche.getPasajero().setId_pasajero(idPasajero);
-                coche.getPasajero().setNombre(nombrePasajero);
-                coche.getPasajero().setEdad(edadPasajero);
-                coche.getPasajero().setPeso(pesoPasajero);
-                listaAuxiliar.add(coche);
+  			    // Asignar el Pasajero al Coche
+  			    coche.setPasajero(pasajero);
+
+  			    listaAuxiliar.add(coche);
+
           
             }
 

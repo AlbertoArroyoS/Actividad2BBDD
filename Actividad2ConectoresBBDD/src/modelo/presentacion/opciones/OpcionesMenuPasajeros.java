@@ -69,13 +69,14 @@ public class OpcionesMenuPasajeros {
 			int idConsultar = leer.nextInt();
 			Pasajero pasajeroAuxiliar = gestorP.buscarPasajero(idConsultar);
 			if(pasajeroAuxiliar!=null) {
-				System.out.println("-----COCHE ENCONTRADO--------------------");
+				System.out.println("-----PASAJERO ENCONTRADO--------------------");
 				System.out.println("Id: " + pasajeroAuxiliar.getId_pasajero());
 				System.out.println("Nombre: " + pasajeroAuxiliar.getNombre());
-				System.out.println("Edad: " + pasajeroAuxiliar.getPeso());
+				System.out.println("Edad: " + pasajeroAuxiliar.getEdad());
 				System.out.println("Peso: " + pasajeroAuxiliar.getPeso());
+				System.out.println("-----------------------------------------------");
 			}else {
-				System.out.println("No se ha encontrado ningún coche");
+				System.out.println("No se ha encontrado ningún pasajero");
 			}
 		
 		}
@@ -90,8 +91,9 @@ public class OpcionesMenuPasajeros {
 				for(Pasajero pasajero : listaAuxiliar) {				
 					System.out.println("Id: " + pasajero.getId_pasajero());
 					System.out.println("Nombre: " + pasajero.getNombre());
-					System.out.println("Edad: " + pasajero.getPeso());
+					System.out.println("Edad: " + pasajero.getEdad());
 					System.out.println("Peso: " + pasajero.getPeso());
+					System.out.println("-----------------------------------------------");
 				}
 				
 			}	
@@ -103,6 +105,7 @@ public class OpcionesMenuPasajeros {
 			String respuesta =leer.next();
 			if("Si".equalsIgnoreCase(respuesta)) {
 				List<Coche> listaAuxiliar = gestor.mostrarCochesDisponibles();
+				System.out.println("-----------------------------------------------");
 				for(Coche coche: listaAuxiliar) {
 					System.out.println("Id: " + coche.getId());
 					System.out.println("Marca: " + coche.getMarca());
@@ -136,22 +139,28 @@ public class OpcionesMenuPasajeros {
 			System.out.println("Respuesta: Si o No");
 			String respuesta =leer.next();
 			if("Si".equalsIgnoreCase(respuesta)) {
+				System.out.println("-----------------------------------------------");
 				List<Coche> listaAuxiliar = gestor.mostrarCochesConPasajeros();
-				System.out.println("----Coches y sus pasajeros asociados---");
-				for(Coche coche: listaAuxiliar) {
-					System.out.println("****COCHE******");
-					System.out.println("Id: " + coche.getId());
-					System.out.println("Marca: " + coche.getMarca());
-					System.out.println("Modelo: " + coche.getModelo());
-					System.out.println("Año de fabricacion: " + coche.getFabYear());
-					System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
-					System.out.println("****ASOCIADO A PASAJERO**");
-					System.out.println("Id: " + coche.getPasajero().getId_pasajero());
-					System.out.println("Nombre: " + coche.getPasajero().getNombre());
-					System.out.println("Edad: " + coche.getPasajero().getPeso());
-					System.out.println("Peso: " + coche.getPasajero().getPeso());
-					System.out.println("******************************");
+				if(listaAuxiliar!= null) {
+					System.out.println("----Coches y sus pasajeros asociados---");
+					for(Coche coche: listaAuxiliar) {
+						System.out.println("****COCHE******");
+						System.out.println("Id: " + coche.getId());
+						System.out.println("Marca: " + coche.getMarca());
+						System.out.println("Modelo: " + coche.getModelo());
+						System.out.println("Año de fabricacion: " + coche.getFabYear());
+						System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
+						System.out.println("****ASOCIADO A PASAJERO**");
+						System.out.println("Id: " + coche.getPasajero().getId_pasajero());
+						System.out.println("Nombre: " + coche.getPasajero().getNombre());
+						System.out.println("Edad: " + coche.getPasajero().getPeso());
+						System.out.println("Peso: " + coche.getPasajero().getPeso());
+						System.out.println("******************************");
+					}
+				
 					
+				}else {
+					System.out.println("NO hay ningun pasajero asociado a un coche");
 				}
 			}
 			
@@ -201,7 +210,7 @@ public class OpcionesMenuPasajeros {
 		//metodos propios
 		public Pasajero introducirDatos() {
 			
-			boolean validarVacio=true;
+
 			Scanner leer = new Scanner(System.in);
 			Pasajero pasajeroAuxiliar = new Pasajero();	
 			System.out.println("Nombre:");
@@ -210,7 +219,7 @@ public class OpcionesMenuPasajeros {
 			int edadPasajero = leer.nextInt();
 			System.out.println("Peso:");
 			double pesoPasajero= leer.nextDouble();
-			pasajeroAuxiliar.setEdad(edadPasajero);
+			pasajeroAuxiliar.setNombre(nombrePasajero);
 			pasajeroAuxiliar.setEdad(edadPasajero);
 			pasajeroAuxiliar.setPeso(pesoPasajero);
 			

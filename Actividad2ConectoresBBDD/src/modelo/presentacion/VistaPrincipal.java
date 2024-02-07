@@ -2,8 +2,7 @@ package modelo.presentacion;
 
 import java.util.Scanner;
 
-
-
+import modelo.presentacion.opciones.OpcionesMenuPasajeros;
 import modelo.presentacion.opciones.OpcionesVistaPrincipal;
 
 
@@ -18,6 +17,7 @@ public class VistaPrincipal {
 
 	public static void main(String[] args) {
 		OpcionesVistaPrincipal opciones = new OpcionesVistaPrincipal();
+		OpcionesMenuPasajeros opcionMenuPasajeros = new OpcionesMenuPasajeros();
 		opciones.iniciarPrograma();	
 
 		boolean continuar = true;
@@ -47,7 +47,51 @@ public class VistaPrincipal {
 	                	opciones.opcion5(leer);
 	                    break;
 	                case 6:
-	                	menuGestionPasajeros();
+	                	boolean continuarPasajeros = true;
+	                	
+	            		do {		
+	                    	//Cargamos el menu inicial y recuperamos la opción elegida
+	            			int opcionPasajeros = menuGestionPasajeros();
+	            			//Si la opcion está fuera del rango de opciones se repetira el menu
+	            			while (opcionPasajeros<1 || opcionPasajeros>8){
+	            				opcionPasajeros = menuGestionPasajeros();
+	            			}
+
+	            	            switch (opcionPasajeros) {
+	            	                case 1://login del usuario, lectura del archivo
+	            	                	opcionMenuPasajeros.opcion1(leer);
+	            	                    break;
+	            	                case 2://nuevo usuario, escritura del archivo si no existe ya
+	            	                	opcionMenuPasajeros.opcion2(leer);
+	            	                    break;
+	            	                case 3:
+	            	                	opcionMenuPasajeros.opcion3(leer);
+	            	                    break;
+	            	                case 4:
+	            	                	opcionMenuPasajeros.opcion4(leer);
+	            	                    break;
+	            	                case 5:
+	            	                	opcionMenuPasajeros.opcion5(leer);
+	            	                    break;
+	            	                case 6:
+	            	                	opcionMenuPasajeros.opcion6(leer);
+	            	                    break;
+	            	                case 7:
+	            	                	opcionMenuPasajeros.opcion7(leer);	                	
+	            	                    break;
+	            	                case 8:
+	            	                	continuarPasajeros= false;	                	
+	            	                    break;
+	            	                case 9:	            	                	
+	            	                	System.out.println("Programa terminado");
+	            	                	continuarPasajeros= false;
+	            	                    continuar=false;
+	            	                    break;
+	            	                default:
+	            	                    System.out.println("Opción no válida. Inténtalo de nuevo.");
+	            	            }
+	            			
+	                    } while (continuar);
 	                    break;
 	                case 7:
 	                	opciones.opcion7();	                	

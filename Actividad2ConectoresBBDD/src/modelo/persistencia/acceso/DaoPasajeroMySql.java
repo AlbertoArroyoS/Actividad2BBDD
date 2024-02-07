@@ -38,8 +38,8 @@ public class DaoPasajeroMySql implements DaoPasajero{
 			return filas;
 		}
 
-		sql = "insert into pasajeros (NOMBRE,EDAD,PESO,ID_COCHE) "
-				+ " values(?,?,?,?)";
+		sql = "insert into pasajeros (NOMBRE,EDAD,PESO) "
+				+ " values(?,?,?)";
 		filas = 0;
 		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			//preparamos la query con valores parametrizables(?)
@@ -102,7 +102,7 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		if(!abrirConexion()){
 			return null;
 		}		
-		sql = "select * from COCHES where ID = ?";
+		sql = "select * from PASAJEROS where ID = ?";
 		Pasajero pasajero = null;
 		
 		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
