@@ -205,10 +205,10 @@ public class DaoPasajeroMySql implements DaoPasajero{
 
             int filasAfectadas = ps.executeUpdate();
 
-            if (filasAfectadas > 0) {
-            	filas=1;
-            } else {
+            if (filasAfectadas == 0) {
             	filas=0;
+            } else {
+            	filas=1;
             }
 
         } catch (SQLException e) {
@@ -241,17 +241,16 @@ public class DaoPasajeroMySql implements DaoPasajero{
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                	coche = new Coche();
-                  	coche.setId(rs.getInt("ID"));
-                	int idPasajero = rs.getInt("id_pasajero");
-                    String nombrePasajero = rs.getString("nombre");
-                    int edadPasajero = rs.getInt("edad");
-                    double pesoPasajero = rs.getDouble("peso");
-                    
-                    coche.getPasajero().setId_pasajero(idPasajero);
-                    coche.getPasajero().setNombre(nombrePasajero);
-                    coche.getPasajero().setEdad(edadPasajero);
-                    coche.getPasajero().setPeso(pesoPasajero);
+                	coche = new Coche();             	
+                
+                    Pasajero pasajero = new Pasajero();
+      			    pasajero.setId_pasajero(rs.getInt(1));
+      			    pasajero.setNombre(rs.getString(2));
+      			    pasajero.setEdad(rs.getInt(3));
+      			    pasajero.setPeso(rs.getDouble(4));
+
+      			    // Asignar el Pasajero al Coche
+      			    coche.setPasajero(pasajero);
                     
                     
                     listaPasajeros.add(coche);
@@ -259,7 +258,7 @@ public class DaoPasajeroMySql implements DaoPasajero{
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción de alguna manera adecuada en tu aplicación
+            return null;
         }
 
         return listaPasajeros;

@@ -91,7 +91,7 @@ public class GestorPasajero {
 	 *         - 3: Ocurrió una excepción SQLException durante la ejecución.
 	 */
 	public int eliminarPasajeroCoche(int idCoche, int idPasajero) {
-		int borrarPC=daoPasajero.addPasajeroCoche(idCoche, idPasajero);
+		int borrarPC=daoPasajero.eliminarPasajeroCoche(idCoche, idPasajero);
 		return borrarPC;
 	}
 	

@@ -53,7 +53,7 @@ public class VistaPrincipal {
 	                    	//Cargamos el menu inicial y recuperamos la opción elegida
 	            			int opcionPasajeros = menuGestionPasajeros();
 	            			//Si la opcion está fuera del rango de opciones se repetira el menu
-	            			while (opcionPasajeros<1 || opcionPasajeros>8){
+	            			while (opcionPasajeros<1 || opcionPasajeros>9){
 	            				opcionPasajeros = menuGestionPasajeros();
 	            			}
 
@@ -91,7 +91,7 @@ public class VistaPrincipal {
 	            	                    System.out.println("Opción no válida. Inténtalo de nuevo.");
 	            	            }
 	            			
-	                    } while (continuar);
+	                    } while (continuarPasajeros);
 	                    break;
 	                case 7:
 	                	opciones.opcion7();	                	
