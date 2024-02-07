@@ -15,4 +15,7 @@ public interface DaoCoche {
 	int modificarCoche (Coche coche);	
 	List<Coche> buscarTodosCoches();
 	int accesoADatos();
+	//requerimiento 2
+	List<Coche> mostrarCochesConPasajeros();
+	List<Coche> mostrarCochesDisponibles();
 }

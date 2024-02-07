@@ -1,5 +1,10 @@
 package modelo.negocio;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import modelo.entidad.Coche;
@@ -125,6 +130,32 @@ public class GestorCoche {
 		boolean configuracion=conf.inicializarPropiedades();
 		return configuracion;
 	}
+	////REQUERIMIENTO 2
+	
+	
+	/**
+     * Obtiene una lista de coches disponibles que no tienen un pasajero asociado en la base de datos.
+     *
+     * @return Una lista de objetos Coche que representan los coches disponibles.
+     *         Si no se puede abrir la conexión, devuelve null.
+     */
+    public List<Coche> mostrarCochesDisponibles() {
+    	List<Coche> listaAuxiliar = daoCoche.mostrarCochesDisponibles();
+		return listaAuxiliar;
+    }
+  		
+
+	
+	/**
+  	 * Muestra todos los coches y sus pasajeros asociados en la base de datos.  	 *
+  	 * @param conexion La conexión a la base de datos.
+  	 * @return Una lista de objetos Coche con información sobre los coches y sus pasajeros asociados.
+  	 *         Si no se puede abrir la conexión, devuelve null.
+  	 */
+    public List<Coche> mostrarCochesConPasajeros() {
+    	List<Coche> listaAuxiliar = daoCoche.mostrarCochesConPasajeros();
+		return listaAuxiliar;
+    }
 	
 	
 }

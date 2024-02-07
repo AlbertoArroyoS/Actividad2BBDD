@@ -345,6 +345,92 @@ public class DaoCocheMySql implements DaoCoche{
                     + "REFERENCES Pasajeros(id)");
         }
     }
+  //metodo sacar todos los coches disponibles, pedido en requerimiento 2 añadir pasajero a coche
+    
+    //REQUERIMIENTO 2
+    
+    /**
+     * Obtiene una lista de coches disponibles que no tienen un pasajero asociado en la base de datos.
+     *
+     * @return Una lista de objetos Coche que representan los coches disponibles.
+     *         Si no se puede abrir la conexión, devuelve null.
+     */
+    @Override
+    public List<Coche> mostrarCochesDisponibles() {
+  		if(!abrirConexion()){
+			filas=2;
+			return null;
+		}
+  				
+  		List<Coche> listaAuxiliar = new ArrayList<>();
+          String sql = "SELECT * FROM coches WHERE id_pasajero IS NULL";
+          Coche coche = null;
+          try (PreparedStatement pstmt = conexion.prepareStatement(sql);
+               ResultSet rs = pstmt.executeQuery()) {
+
+              while (rs.next()) {
+              	coche = new Coche();
+              	coche.setId(rs.getInt("ID"));
+  				coche.setMarca(rs.getString("MARCA"));
+  				coche.setModelo(rs.getString("MODELO"));
+  				coche.setFabYear(rs.getInt("AÑO_FABRICACION"));
+  				coche.setKilometros(rs.getInt("KILOMETROS"));
+
+                  listaAuxiliar.add(coche);
+              }
+
+          } catch (SQLException e) {
+              e.printStackTrace(); // Manejar la excepción de alguna manera adecuada en tu aplicación
+          }
+  		return listaAuxiliar;
+      }
+  	
+
+  	/**
+  	 * Muestra todos los coches y sus pasajeros asociados en la base de datos.  	 *
+  	 * @return Una lista de objetos Coche con información sobre los coches y sus pasajeros asociados.
+  	 *         Si no se puede abrir la conexión, devuelve null.
+  	 */
+  	@Override
+  	public List<Coche> mostrarCochesConPasajeros() {
+    	if(!abrirConexion()){
+			filas=2;
+			return null;
+		}	
+    	List<Coche> listaAuxiliar = new ArrayList<>();
+        String sql = "SELECT c.id AS id_coche, c.marca, c.modelo, c.año_fabricacion, c.kilometros, p.id AS id_pasajero, p.nombre, p.edad, p.peso " +
+                     "FROM coches c LEFT JOIN pasajeros p ON c.id_pasajero = p.id";
+        Coche coche = null;
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+            	coche = new Coche();
+              	coche.setId(rs.getInt("ID"));
+  				coche.setMarca(rs.getString("MARCA"));
+  				coche.setModelo(rs.getString("MODELO"));
+  				coche.setFabYear(rs.getInt("AÑO_FABRICACION"));
+  				coche.setKilometros(rs.getInt("KILOMETROS"));
+
+                int idPasajero = rs.getInt("id_pasajero");
+                String nombrePasajero = rs.getString("nombre");
+                int edadPasajero = rs.getInt("edad");
+                double pesoPasajero = rs.getDouble("peso");
+                
+                coche.getPasajero().setId_pasajero(idPasajero);
+                coche.getPasajero().setNombre(nombrePasajero);
+                coche.getPasajero().setEdad(edadPasajero);
+                coche.getPasajero().setPeso(pesoPasajero);
+                listaAuxiliar.add(coche);
+          
+            }
+
+        } catch (SQLException e) {
+            return null; // Manejar la excepción de alguna manera adecuada en tu aplicación
+        }
+		return listaAuxiliar;
+    }
+  	
 }
-// + "FOREIGN KEY (id_pasajero) REFERENCES Pasajeros(id)"
+
 

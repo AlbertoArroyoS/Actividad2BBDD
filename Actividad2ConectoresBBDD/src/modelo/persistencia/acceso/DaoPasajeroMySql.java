@@ -18,7 +18,6 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		private int filas = 0;
 		private String sql;
 		private Connection conexion;
-		private PreparedStatement ps;
 		private ResultSet rs;
 
 
@@ -150,7 +149,16 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		}
 		return lista;
 	}
-
+	/**
+	 * Metodo para asocia un pasajero a un coche en la base de datos.
+	 *
+	 * @param idCoche    El ID del coche al cual se asociará el pasajero.
+	 * @param idPasajero El ID del pasajero que se asociará al coche.
+	 * @return Un valor entero que representa el resultado de la operación:
+	 *         - 1: Éxito, el pasajero se asoció al coche correctamente.
+	 *         - 2: No se pudo abrir la conexión a la base de datos.
+	 *         - 3: Ocurrió una excepción SQLException durante la ejecución.
+	 */
 	@Override
 	public int addPasajeroCoche(int idCoche, int idPasajero) {
 		if(!abrirConexion()){
@@ -208,7 +216,13 @@ public class DaoPasajeroMySql implements DaoPasajero{
         }
 		return filas;
 	}
-
+	/**
+     * Obtiene una lista de coches con información sobre los pasajeros asociados a un coche específico.
+     *
+     * @param idCoche El ID del coche del cual se desea obtener la información de pasajeros.
+     * @return Una lista de objetos Coche con información sobre los pasajeros asociados al coche.
+     *         Si no se puede abrir la conexión, devuelve null.
+     */
 	@Override
 	public List<Coche> pasajerosEnCoche(int idCoche) {
 		if(!abrirConexion()){
