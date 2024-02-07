@@ -10,8 +10,8 @@ public interface DaoPasajero {
 	int eliminarPasajero(int idPasajero);
 	Pasajero buscarPasajero(int idPasajero);
 	List<Pasajero> buscarTodosPasajeros();
-	int addPasajeroCoche(Pasajero pasajero);
-	int eliminarPasajeroCoche(Pasajero pasajero);
+	int addPasajeroCoche(int idCoche, int idPasajero);
+	int eliminarPasajeroCoche(int idCoche, int idPasajero);
 	List<Pasajero> pasajerosEnCoche(int idCoche);
 	
 

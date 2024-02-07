@@ -47,7 +47,6 @@ public class DaoPasajeroMySql implements DaoPasajero{
 			ps.setString(1, pasajero.getNombre());
 			ps.setInt(2, pasajero.getEdad());
 			ps.setDouble(3, pasajero.getPeso());
-			ps.setInt(4, pasajero.getCoche().getId());
 			filas = ps.executeUpdate();
 			filas = 1;
 			if(filas == 0) {
@@ -117,7 +116,6 @@ public class DaoPasajeroMySql implements DaoPasajero{
 				pasajero.setNombre(rs.getString("NOMBRE"));
 				pasajero.setEdad(rs.getInt("EDAD"));
 				pasajero.setPeso(rs.getDouble("Peso"));
-				pasajero.getCoche().setId(rs.getInt("ID_COCHE"));
 			}
 		} catch (SQLException e) {
 			return null;
@@ -145,7 +143,6 @@ public class DaoPasajeroMySql implements DaoPasajero{
 				pasajero.setNombre(rs.getString("NOMBRE"));
 				pasajero.setEdad(rs.getInt("EDAD"));
 				pasajero.setPeso(rs.getDouble("Peso"));
-				pasajero.getCoche().setId(rs.getInt("ID_COCHE"));
 				lista.add(pasajero);
 			}
 		} catch (SQLException e) {
@@ -155,16 +152,16 @@ public class DaoPasajeroMySql implements DaoPasajero{
 	}
 
 	@Override
-	public int addPasajeroCoche(Pasajero pasajero) {
+	public int addPasajeroCoche(int idCoche, int idPasajero) {
 		if(!abrirConexion()){
 			filas=2;
 			return filas;
 		}
-		sql = "update PASAJEROS set ID_COCHE = ?"
-				+ " where ID = ?";
+		String sql = "UPDATE coches SET id_pasajero = ? WHERE id = ?";
+		
 		try (PreparedStatement ps = conexion.prepareStatement(sql)) {	
-			ps.setInt(1, pasajero.getCoche().getId());
-			ps.setInt(2, pasajero.getId_pasajero());
+			ps.setInt(1, idPasajero);
+			ps.setInt(2, idCoche);
 			filas = ps.executeUpdate();
 			filas=1;
 		} catch (SQLException e) {
@@ -174,9 +171,10 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		
 		return filas;
 	}
+	
 
 	@Override
-	public int eliminarPasajeroCoche(Pasajero pasajero) {
+	public int eliminarPasajeroCoche(int idCoche, int idPasajero) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -208,5 +206,7 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		}
 		return true;
 	}
+	
+	
 
 }

@@ -10,7 +10,6 @@ public class Pasajero {
 	private String nombre;
 	private int edad;
 	private double peso;
-	private Coche coche;
 	
 	public Pasajero() {
 		super();
@@ -48,20 +47,15 @@ public class Pasajero {
 		this.peso = peso;
 	}
 
-	public Coche getCoche() {
-		return coche;
-	}
-
-	public void setCoche(Coche coche) {
-		this.coche = coche;
-	}
-
-	
 	@Override
 	public String toString() {
 		return "Pasajero [id_pasajero=" + id_pasajero + ", nombre=" + nombre + ", edad=" + edad + ", peso=" + peso
-				+ ", coche=" + coche + "]";
+				+ "]";
 	}
+
+	
+
+	
 	
 	
 	
