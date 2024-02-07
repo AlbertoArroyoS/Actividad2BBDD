@@ -139,6 +139,4 @@ public static int menuGestionPasajeros() {
 	return opcion;	
 	}
 
-
-
 }

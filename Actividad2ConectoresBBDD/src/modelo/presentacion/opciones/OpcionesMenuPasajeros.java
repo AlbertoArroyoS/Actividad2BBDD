@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Scanner;
 
 import modelo.entidad.Coche;
+import modelo.entidad.Pasajero;
+import modelo.negocio.GestorCoche;
 import modelo.negocio.GestorPasajero;
+import modelo.persistencia.acceso.DaoPasajeroMySql;
+import modelo.persistencia.interfaces.DaoPasajero;
 
 public class OpcionesMenuPasajeros {
 	
 	private GestorPasajero gestorP = new GestorPasajero();
-	
+	private GestorCoche gestor= new GestorCoche();
 	//opcion 1 del menu principal, añadir coche
 	
 		/**
@@ -20,17 +24,17 @@ public class OpcionesMenuPasajeros {
 	     */
 		public void opcion1(Scanner leer) {
 			
-			Coche cocheAuxiliar = introducirDatos();
-				int altaCoche = gestor.altaCoche(cocheAuxiliar);
+			Pasajero pasajeroAuxiliar = introducirDatos();
+				int altaCoche = gestorP.altaPasajero(pasajeroAuxiliar);
 				switch (altaCoche) {
 			        case 0:
-			        	System.out.println("** Coche NO añadido **");
+			        	System.out.println("** Pasajero NO añadido **");
 			        	break;
 			        case 1:
-			        	System.out.println("** Coche añadido correctamente **");
+			        	System.out.println("** Pasajero añadido correctamente **");
 			            break;
 			        case 2:
-			        	System.out.println("** Coche NO añadido. Error al establecer la conexión **");
+			        	System.out.println("** Pasajero NO añadido. Error al establecer la conexión **");
 			            break;
 			        case 3:
 			        	System.out.println("** Error de Excepción **");
@@ -41,18 +45,18 @@ public class OpcionesMenuPasajeros {
 		
 		
 		public void opcion2(Scanner leer) {
-			System.out.println("Id del coche a eliminar:");
+			System.out.println("Id del Pasajero a eliminar:");
 			int idBorrar = leer.nextInt();
-			int bajaCoche= gestor.eliminarCoche(idBorrar);
-			switch (bajaCoche) {
+			int bajaPasajero= gestorP.eliminarPasajero(idBorrar);
+			switch (bajaPasajero) {
 		        case 0:
-		        	System.out.println("** No existe ningun coche con ese ID **");
+		        	System.out.println("** No existe ningun pasajero con ese ID **");
 		        	break;
 		        case 1:
-		        	System.out.println("** Coche borrado correctamente **");
+		        	System.out.println("** Pasajero borrado correctamente **");
 		            break;
 		        case 2:
-		        	System.out.println("** Coche NO borrado. Error al establecer la conexión **");
+		        	System.out.println("** Pasajero NO borrado. Error al establecer la conexión **");
 		            break;
 		        case 3:
 		        	System.out.println("** Error de Excepción **");
@@ -61,16 +65,15 @@ public class OpcionesMenuPasajeros {
 		}
 		
 		public void opcion3(Scanner leer) {
-			System.out.println("Id del coche a consultar:");
+			System.out.println("Id del pasajero a consultar:");
 			int idConsultar = leer.nextInt();
-			Coche cocheAuxiliar = gestor.buscarCoche(idConsultar);
-			if(cocheAuxiliar!=null) {
+			Pasajero pasajeroAuxiliar = gestorP.buscarPasajero(idConsultar);
+			if(pasajeroAuxiliar!=null) {
 				System.out.println("-----COCHE ENCONTRADO--------------------");
-				System.out.println("Id: " + cocheAuxiliar.getId());
-				System.out.println("Marca: " + cocheAuxiliar.getMarca());
-				System.out.println("Modelo: " + cocheAuxiliar.getModelo());
-				System.out.println("Año de fabricacion: " + cocheAuxiliar.getFabYear());
-				System.out.println("Kilometros: "+ cocheAuxiliar.getKilometros());
+				System.out.println("Id: " + pasajeroAuxiliar.getId_pasajero());
+				System.out.println("Nombre: " + pasajeroAuxiliar.getNombre());
+				System.out.println("Edad: " + pasajeroAuxiliar.getPeso());
+				System.out.println("Peso: " + pasajeroAuxiliar.getPeso());
 			}else {
 				System.out.println("No se ha encontrado ningún coche");
 			}
@@ -78,128 +81,140 @@ public class OpcionesMenuPasajeros {
 		}
 		
 		public void opcion4(Scanner leer) {
-			System.out.println("Indroduzca el ID del coche a modificar:");
-			int idBuscar = leer.nextInt();
-			Coche cocheAuxiliar = introducirDatos();
-			cocheAuxiliar.setId(idBuscar);
-
-			int modificarCoche = gestor.modificarCoche(cocheAuxiliar);
-			switch (modificarCoche) {
-		        case 0:
-		        	System.out.println("** Coche NO modificado **");
-		        	break;
-		        case 1:
-		        	System.out.println("** Coche modificado correctamente **");
-		        	System.out.println(cocheAuxiliar);
-		            break;
-		        case 2:
-		        	System.out.println("** Coche NO modificado. Error al establecer la conexión **");
-		            break;
-		        case 3:
-		        	System.out.println("** Error de Excepción **");
-		            break;
-			}		
-		}	
-		
-		public void opcion5(Scanner leer) {
-			List<Coche> listaAuxiliar = gestor.buscarTodosCoches();
+			List<Pasajero> listaAuxiliar = gestorP.buscarTodosCoches();
 			if (listaAuxiliar == null || listaAuxiliar.isEmpty()) {
-				System.out.println("No existe ningun coche registrado");
+				System.out.println("No existe ningun pasajero registrado");
 			}
 			else {
-				System.out.println("------LISTADO DE COCHES REGISTRADOS --------");
-				for(Coche coche : listaAuxiliar) {				
+				System.out.println("------LISTADO DE PASAJEROS REGISTRADOS --------");
+				for(Pasajero pasajero : listaAuxiliar) {				
+					System.out.println("Id: " + pasajero.getId_pasajero());
+					System.out.println("Nombre: " + pasajero.getNombre());
+					System.out.println("Edad: " + pasajero.getPeso());
+					System.out.println("Peso: " + pasajero.getPeso());
+				}
+				
+			}	
+		}
+		//
+		public void opcion5(Scanner leer) {
+			System.out.println("¿Desea que le muestre primero los coches disponibles? ");
+			System.out.println("Respuesta: Si o No");
+			String respuesta =leer.next();
+			if("Si".equalsIgnoreCase(respuesta)) {
+				List<Coche> listaAuxiliar = gestor.mostrarCochesDisponibles();
+				for(Coche coche: listaAuxiliar) {
 					System.out.println("Id: " + coche.getId());
 					System.out.println("Marca: " + coche.getMarca());
 					System.out.println("Modelo: " + coche.getModelo());
 					System.out.println("Año de fabricacion: " + coche.getFabYear());
 					System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
 				}
-				
-			}	
+			}
+			
+			System.out.println("--------Añadir pasajero a coche-------");
+			System.out.println("Id del pasajero a añadir:");
+			int idPasajero = leer.nextInt();
+			System.out.println("Id del coche a añádir:");
+			int idCoche = leer.nextInt();
+			int altaCoche=gestorP.addPasajeroCoche(idCoche, idPasajero);
+			switch (altaCoche) {
+	        case 1:
+	        	System.out.println("** Pasajero añadido correctamente **");
+	            break;
+	        case 2:
+	        	System.out.println("** Pasajero NO añadido. Error al establecer la conexión **");
+	            break;
+	        case 3:
+	        	System.out.println("** Error de Excepción **");
+	            break;
+			}		
 		}
 		
 		public void opcion6(Scanner leer) {
-			
-		}
-		
-		public void opcion7() {
-			System.out.println("----------------------------------------------------");
-			System.out.println("|                DATOS  ACCESO                     |");
-			System.out.println("----------------------------------------------------");
-			System.out.println("url:"+ gestor.obtenerPropiedades("url"));
-			System.out.println("nombreBBDD:"+gestor.obtenerPropiedades("nombreBBDD"));
-			System.out.println("usuario:"+gestor.obtenerPropiedades("usuario"));
-			System.out.println("password:"+gestor.obtenerPropiedades("password"));
-			System.out.println("----------------------------------------------------");
-		}
-		
-		
-		
-		/**
-	     * Inicia el programa, llamando al método para conectarse a la BBDD y crear
-	     * la base de datos y la tabla en caso de que no exista. Y accede al fichero
-	     * properties que contiene los datos para la conexion.
-	     * Muestra mensajes según el resultado.
-	     */
-		public void iniciarPrograma() {
-			
-			boolean accesoAPropiedades=gestor.iniciarPropiedades();
-			if (accesoAPropiedades) {
-				System.out.println("Acceso a propiedades correcto");
-			}else {
-				System.out.println("Error al acceder a propiedades");
-			}
-			int accesoADatos= gestor.iniciarAccesoADatos();
-			switch (accesoADatos) {
-		        case 1://login del usuario, lectura del archivo
-		        	//System.out.println("Creado el archivo");
-		        	System.out.println("Conexion correcta a datos");
-		            break;
-		        case 2://nuevo usuario, escritura del archivo si no existe ya
-		        	System.out.println("Error al iniciar la BBDD");
-		            break;
-
-			}
-			
-		}
-		
-
-		
-		//metodos propios
-		public Coche introducirDatos() {
-			
-			boolean validarVacio=true;
-			Scanner leer = new Scanner(System.in);
-			Coche cocheAuxiliar = new Coche();	
-			
-			while (validarVacio) {
-				System.out.println("Marca:");
-				String marcaCoche = leer.nextLine();
-				cocheAuxiliar.setMarca(marcaCoche);
-				if(validarVacio=gestor.validarCampoVacio(marcaCoche)) {
-					System.out.println("**La marca del coche no puede estar vacia\n");
+			System.out.println("¿Desea que le muestre primero todos los coches y sus pasajeros asociados? ");
+			System.out.println("Respuesta: Si o No");
+			String respuesta =leer.next();
+			if("Si".equalsIgnoreCase(respuesta)) {
+				List<Coche> listaAuxiliar = gestor.mostrarCochesConPasajeros();
+				System.out.println("----Coches y sus pasajeros asociados---");
+				for(Coche coche: listaAuxiliar) {
+					System.out.println("****COCHE******");
+					System.out.println("Id: " + coche.getId());
+					System.out.println("Marca: " + coche.getMarca());
+					System.out.println("Modelo: " + coche.getModelo());
+					System.out.println("Año de fabricacion: " + coche.getFabYear());
+					System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
+					System.out.println("****ASOCIADO A PASAJERO**");
+					System.out.println("Id: " + coche.getPasajero().getId_pasajero());
+					System.out.println("Nombre: " + coche.getPasajero().getNombre());
+					System.out.println("Edad: " + coche.getPasajero().getPeso());
+					System.out.println("Peso: " + coche.getPasajero().getPeso());
+					System.out.println("******************************");
 					
 				}
 			}
-			validarVacio=true;
-			while (validarVacio) {
-				System.out.println("Modelo:");
-				String modeloCoche = leer.nextLine();
-				cocheAuxiliar.setModelo(modeloCoche);
-				if(validarVacio=gestor.validarCampoVacio(modeloCoche)) {
-					System.out.println("**El modelo del coche no puede estar vacio:\n");
-				}
-			}
-			System.out.println("Año de fabricación:");
-			int fabYear = leer.nextInt();
-			System.out.println("Kilometros:");
-			int kilometros = leer.nextInt();
-
-			cocheAuxiliar.setFabYear(fabYear);
-			cocheAuxiliar.setKilometros(kilometros);
 			
-			return cocheAuxiliar;
+			System.out.println("--------Eliminar pasajero de coche-------");
+			System.out.println("Id del pasajero a eliminar:");
+			int idPasajero = leer.nextInt();
+			System.out.println("Id del coche a eliminar:");
+			int idCoche = leer.nextInt();
+			int bajaCoche=gestorP.eliminarPasajeroCoche(idCoche, idPasajero);
+			switch (bajaCoche) {
+	        case 1:
+	        	System.out.println("** Pasajero borrado correctamente **");
+	            break;
+	        case 2:
+	        	System.out.println("** Pasajero NO borrado. Error al establecer la conexión **");
+	            break;
+	        case 3:
+	        	System.out.println("** Error de Excepción **");
+	            break;
+			}		
+		}
+		
+		public void opcion7(Scanner leer) {
+			System.out.println("Id del coche a consultar:");
+			int idConsultar = leer.nextInt();
+			List<Coche> listaAuxiliar = gestorP.pasajerosEnCoche(idConsultar);
+			if(listaAuxiliar != null) {
+				System.out.println("----Todos los pasajeros de un coche---");
+				for(Coche coche : listaAuxiliar) {
+					System.out.println("******************************");
+					System.out.println("El coche con id:" +coche.getId()+ " y Marca: " +coche.getMarca());
+					System.out.println("Tiene los siguientes pasajeros");
+					System.out.println("Id: " + coche.getPasajero().getId_pasajero());
+					System.out.println("Nombre: " + coche.getPasajero().getNombre());
+					System.out.println("Edad: " + coche.getPasajero().getPeso());
+					System.out.println("Peso: " + coche.getPasajero().getPeso());
+					System.out.println("******************************");
+				}
+			}else {
+				System.out.println("No tiene ningun pasajero asociado");
+			}
+			
+			
+		}
+
+		
+		//metodos propios
+		public Pasajero introducirDatos() {
+			
+			boolean validarVacio=true;
+			Scanner leer = new Scanner(System.in);
+			Pasajero pasajeroAuxiliar = new Pasajero();	
+			System.out.println("Nombre:");
+			String nombrePasajero = leer.nextLine();
+			System.out.println("Edad:");
+			int edadPasajero = leer.nextInt();
+			System.out.println("Peso:");
+			double pesoPasajero= leer.nextDouble();
+			pasajeroAuxiliar.setEdad(edadPasajero);
+			pasajeroAuxiliar.setEdad(edadPasajero);
+			pasajeroAuxiliar.setPeso(pesoPasajero);
+			
+			return pasajeroAuxiliar;
 		}
 
 }
