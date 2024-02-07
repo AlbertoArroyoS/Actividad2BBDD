@@ -107,20 +107,26 @@ public class OpcionesMenuPasajeros {
 			String respuesta =leer.next();
 			if("Si".equalsIgnoreCase(respuesta)) {
 				List<Coche> listaAuxiliar = gestorPC.mostrarCochesDisponibles();
-				System.out.println("-----------------------------------------------");
-				for(Coche coche: listaAuxiliar) {
-					System.out.println("Id: " + coche.getId());
-					System.out.println("Marca: " + coche.getMarca());
-					System.out.println("Modelo: " + coche.getModelo());
-					System.out.println("Año de fabricacion: " + coche.getFabYear());
-					System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
+				if(listaAuxiliar.isEmpty()) {
+					System.out.println("No existen coches sin pasajeros");
+				}
+				else {
+					System.out.println("-----------------------------------------------");
+					for(Coche coche: listaAuxiliar) {
+						System.out.println("Id: " + coche.getId());
+						System.out.println("Marca: " + coche.getMarca());
+						System.out.println("Modelo: " + coche.getModelo());
+						System.out.println("Año de fabricacion: " + coche.getFabYear());
+						System.out.println("Kilometros: "+ coche.getKilometros()+"\n");
+					}
+				
 				}
 			}
 			
-			System.out.println("--------Añadir pasajero a coche-------");
-			System.out.println("Id del coche a añádir:");
+			System.out.println("--- Ahora vamos a añadir un pasajero al coche ----");
+			System.out.println("Introduzca Id del coche a añádir:");
 			int idCoche = leer.nextInt();
-			System.out.println("Id del pasajero a añadir:");
+			System.out.println("Introduzca Id del pasajero a añadir:");
 			int idPasajero = leer.nextInt();			
 			int altaCoche=gestorPC.addPasajeroCoche(idCoche, idPasajero);
 			switch (altaCoche) {
@@ -137,7 +143,7 @@ public class OpcionesMenuPasajeros {
 		}
 		
 		public void opcion6(Scanner leer) {
-			System.out.println("¿Desea que le muestre primero todos los coches que no tienen pasajero asociado? ");
+			System.out.println("¿Desea que le muestre primero todos los coches y sus pasajeros asociados? ");
 			System.out.println("Respuesta: Si o No");
 			String respuesta =leer.next();
 			if("Si".equalsIgnoreCase(respuesta)) {
@@ -145,6 +151,7 @@ public class OpcionesMenuPasajeros {
 				List<Coche> listaAuxiliar = gestorPC.mostrarCochesConPasajeros();
 				if(listaAuxiliar!= null) {
 					System.out.println("----Coches y sus pasajeros asociados---");
+					System.out.println("-----------------------------------------------");
 					for(Coche coche: listaAuxiliar) {
 						System.out.println("****COCHE******");
 						System.out.println("Id: " + coche.getId());
@@ -157,12 +164,13 @@ public class OpcionesMenuPasajeros {
 						System.out.println("Nombre: " + coche.getPasajero().getNombre());
 						System.out.println("Edad: " + coche.getPasajero().getEdad());
 						System.out.println("Peso: " + coche.getPasajero().getPeso());
-						System.out.println("******************************");
+						System.out.println("------------------------------------------------");
 					}
 				
 					
 				}else {
 					System.out.println("NO hay ningun pasajero asociado a un coche");
+					System.out.println("-----------------------------------------------");
 				}
 			}
 			
@@ -190,9 +198,10 @@ public class OpcionesMenuPasajeros {
 			int idConsultar = leer.nextInt();
 			List<Coche> listaAuxiliar = gestorPC.pasajerosEnCoche(idConsultar);
 			if(!listaAuxiliar.isEmpty()) {
-				System.out.println("El coche Tiene el siguientes pasajeros asociado");
+				System.out.println("El coche con Id "+idConsultar +" tiene los siguientes pasajeros asociados");
+				System.out.println("******************************");
 				for(Coche coche : listaAuxiliar) {
-					System.out.println("******************************");
+					
 					System.out.println("Id: " + coche.getPasajero().getId_pasajero());
 					System.out.println("Nombre: " + coche.getPasajero().getNombre());
 					System.out.println("Edad: " + coche.getPasajero().getEdad());

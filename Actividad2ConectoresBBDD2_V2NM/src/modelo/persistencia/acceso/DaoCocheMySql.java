@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
+import modelo.persistencia.datos.ConfiguracionPropiedades;
 import modelo.persistencia.interfaces.DaoCoche;
 
 /**

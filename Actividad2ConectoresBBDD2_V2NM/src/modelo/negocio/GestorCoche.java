@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.entidad.Coche;
-import modelo.persistencia.acceso.ConfiguracionPropiedades;
 import modelo.persistencia.acceso.DaoCocheMySql;
-import modelo.persistencia.acceso.TablasBaseDeDatos;
+import modelo.persistencia.datos.ConfiguracionPropiedades;
+import modelo.persistencia.datos.TablasBaseDeDatos;
 import modelo.persistencia.interfaces.DaoCoche;
 
 public class GestorCoche {

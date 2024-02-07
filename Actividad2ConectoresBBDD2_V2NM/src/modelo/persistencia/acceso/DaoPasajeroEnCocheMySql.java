@@ -10,6 +10,7 @@ import java.util.List;
 
 import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
+import modelo.persistencia.datos.ConfiguracionPropiedades;
 import modelo.persistencia.interfaces.DaoPasajeroEnCoche;
 
 public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{

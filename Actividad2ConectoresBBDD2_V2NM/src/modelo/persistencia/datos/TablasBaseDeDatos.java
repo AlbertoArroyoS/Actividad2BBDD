@@ -1,4 +1,4 @@
-package modelo.persistencia.acceso;
+package modelo.persistencia.datos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

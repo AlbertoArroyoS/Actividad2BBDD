@@ -1,4 +1,4 @@
-package modelo.persistencia.acceso;
+package modelo.persistencia.datos;
 
 import java.io.IOException;
 import java.io.InputStream;
