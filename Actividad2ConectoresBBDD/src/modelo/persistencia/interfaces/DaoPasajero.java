@@ -2,6 +2,7 @@ package modelo.persistencia.interfaces;
 
 import java.util.List;
 
+import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
 
 public interface DaoPasajero {
@@ -12,7 +13,7 @@ public interface DaoPasajero {
 	List<Pasajero> buscarTodosPasajeros();
 	int addPasajeroCoche(int idCoche, int idPasajero);
 	int eliminarPasajeroCoche(int idCoche, int idPasajero);
-	List<Pasajero> pasajerosEnCoche(int idCoche);
+	List<Coche> pasajerosEnCoche(int idCoche);
 	
 
 }

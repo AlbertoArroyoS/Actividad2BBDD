@@ -172,18 +172,85 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		return filas;
 	}
 	
-
+	/**
+	 * Metodo para eliminar un pasajero de un coche en la base de datos.
+	 *
+	 * @param idCoche    El ID del coche del cual se eliminará el pasajero.
+	 * @param idPasajero El ID del pasajero que se eliminará del coche.
+	 * @return Un valor entero que representa el resultado de la operación:
+	 *         - 1: Éxito, el pasajero fue eliminado del coche.
+	 *         - 0: No se encontró el coche o el pasajero asociado.
+	 *         - 2: No se pudo abrir la conexión a la base de datos.
+	 *         - 3: Ocurrió una excepción SQLException durante la ejecución.
+	 */
 	@Override
 	public int eliminarPasajeroCoche(int idCoche, int idPasajero) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!abrirConexion()){
+			filas=2;
+			return filas;
+		}		
+		String sql = "UPDATE coches SET id_pasajero = NULL WHERE id = ? AND id_pasajero = ?";
+        
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCoche);
+            ps.setInt(2, idPasajero);
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+            	filas=1;
+            } else {
+            	filas=0;
+            }
+
+        } catch (SQLException e) {
+        	filas=3;
+        }
+		return filas;
 	}
 
 	@Override
-	public List<Pasajero> pasajerosEnCoche(int idCoche) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<Coche> pasajerosEnCoche(int idCoche) {
+		if(!abrirConexion()){
+			filas=2;
+			return null;
+		}	
+		Coche coche = null;
+		List<Coche> listaPasajeros = new ArrayList<>();
+        String sql = "SELECT p.id, p.nombre, p.edad, p.peso " +
+                     "FROM coches c INNER JOIN pasajeros p ON c.id_pasajero = p.id " +
+                     "WHERE c.id = ?";
+        
+        
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idCoche);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                	coche = new Coche();
+                  	coche.setId(rs.getInt("ID"));
+                	int idPasajero = rs.getInt("id_pasajero");
+                    String nombrePasajero = rs.getString("nombre");
+                    int edadPasajero = rs.getInt("edad");
+                    double pesoPasajero = rs.getDouble("peso");
+                    
+                    coche.getPasajero().setId_pasajero(idPasajero);
+                    coche.getPasajero().setNombre(nombrePasajero);
+                    coche.getPasajero().setEdad(edadPasajero);
+                    coche.getPasajero().setPeso(pesoPasajero);
+                    
+                    
+                    listaPasajeros.add(coche);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción de alguna manera adecuada en tu aplicación
+        }
+
+        return listaPasajeros;
+    }
+	
 	
 	
 	/**
