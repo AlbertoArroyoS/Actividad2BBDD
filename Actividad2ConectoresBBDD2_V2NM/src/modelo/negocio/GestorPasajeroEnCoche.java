@@ -1,6 +1,11 @@
 package modelo.negocio;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import modelo.entidad.Coche;
 import modelo.persistencia.acceso.DaoPasajeroEnCocheMySql;
@@ -76,5 +81,17 @@ public class GestorPasajeroEnCoche {
 		List<Coche> listaAuxiliar = daoPC.pasajerosEnCoche(idCoche);
 		return listaAuxiliar;
     }
+	
+	/**
+	 * Muestra todos los coches disponibles y el número de pasajeros asociados en la base de datos.
+	 *
+	 * @return Un Map donde las claves son objetos Coche representando coches disponibles,
+	 *         y los valores son enteros representando el número de pasajeros asociados a cada coche.
+	 *         Si no se puede abrir la conexión, devuelve null.
+	 */
+		public Map<Coche, Integer> mostrarCochesConNumeroPasajeros() {
+			Map<Coche, Integer> mapaAuxiliar = daoPC.mostrarCochesConNumeroPasajeros();
+			return mapaAuxiliar;
+		}
 
 }

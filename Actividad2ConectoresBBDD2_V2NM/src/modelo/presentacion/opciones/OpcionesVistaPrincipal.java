@@ -159,7 +159,7 @@ public class OpcionesVistaPrincipal {
 	        	System.out.println("Conexion correcta a datos");
 	            break;
 	        case 2://nuevo usuario, escritura del archivo si no existe ya
-	        	//System.out.println("Error al iniciar la BBDD");
+	        	System.out.println("Error al iniciar la BBDD");
 	            break;
 
 		}

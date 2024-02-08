@@ -1,6 +1,7 @@
 package modelo.presentacion.opciones;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import modelo.entidad.Coche;
@@ -107,7 +108,7 @@ public class OpcionesMenuPasajeros {
 			String respuesta =leer.next();
 			if("Si".equalsIgnoreCase(respuesta)) {
 				List<Coche> listaAuxiliar = gestorPC.mostrarCochesDisponibles();
-				if(listaAuxiliar.isEmpty()) {
+				if(listaAuxiliar.isEmpty() || listaAuxiliar == null) {
 					System.out.println("No existen coches sin pasajeros");
 				}
 				else {
@@ -122,6 +123,31 @@ public class OpcionesMenuPasajeros {
 				
 				}
 			}
+			System.out.println("¿Desea que le muestre los coches disponibles y el número de pasajeros asociados? ");
+			System.out.println("Respuesta: Si o No");
+			String respuesta2 =leer.next();
+			if("Si".equalsIgnoreCase(respuesta2)) {
+				Map<Coche, Integer> cochesConPasajeros = gestorPC.mostrarCochesConNumeroPasajeros();
+				 if (cochesConPasajeros != null) {
+					System.out.println("-----------------------------------");
+			        for (Map.Entry<Coche, Integer> entry : cochesConPasajeros.entrySet()) {
+			            Coche coche = entry.getKey();
+			            int numPasajeros = entry.getValue();
+			            
+			            System.out.println("ID: " + coche.getId());
+			            System.out.println("Marca: " + coche.getMarca());
+			            System.out.println("Modelo: " + coche.getModelo());
+			            System.out.println("Año de fabricación: " + coche.getFabYear());
+			            System.out.println("Kilometros: " + coche.getKilometros());
+			            System.out.println("Número de pasajeros: " + numPasajeros);
+			            System.out.println("-----------------------------------");
+			        }
+			    } else {
+			        System.out.println("No existen datos de coches con pasajeros");
+			    }
+			
+			}
+			
 			
 			System.out.println("--- Ahora vamos a añadir un pasajero al coche ----");
 			System.out.println("Introduzca Id del coche a añádir:");

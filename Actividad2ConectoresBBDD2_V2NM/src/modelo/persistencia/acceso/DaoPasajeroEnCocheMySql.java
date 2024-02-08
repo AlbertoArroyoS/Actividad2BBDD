@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
@@ -177,49 +179,55 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
           }
   		return listaAuxiliar;
       }
-	/**
+/**
  * Muestra todos los coches disponibles y el número de pasajeros asociados en la base de datos.
  *
  * @return Un Map donde las claves son objetos Coche representando coches disponibles,
  *         y los valores son enteros representando el número de pasajeros asociados a cada coche.
  *         Si no se puede abrir la conexión, devuelve null.
- *
- * @throws SQLException Si hay un error al ejecutar la consulta SQL.
  */
-@Override
-public Map<Coche, Integer> mostrarCochesConNumeroPasajeros() throws SQLException {
-    if (!abrirConexion()) {
-        filas = 2;
-        return null;
-    }
-
-    Map<Coche, Integer> cochesConPasajeros = new HashMap<>();
-    String sql = "SELECT c.id, c.marca, c.modelo, c.año_fabricacion, c.kilometros, COUNT(p.id) AS num_pasajeros " +
-                 "FROM coches c LEFT JOIN pasajeros p ON c.id_pasajero = p.id " +
-                 "GROUP BY c.id, c.marca, c.modelo, c.año_fabricacion, c.kilometros " +
-                 "HAVING c.id_pasajero IS NULL";
-
-    try (PreparedStatement pstmt = conexion.prepareStatement(sql);
-         ResultSet rs = pstmt.executeQuery()) {
-
-        while (rs.next()) {
-            Coche coche = new Coche();
-            coche.setId(rs.getInt("id"));
-            coche.setMarca(rs.getString("marca"));
-            coche.setModelo(rs.getString("modelo"));
-            coche.setFabYear(rs.getInt("año_fabricacion"));
-            coche.setKilometros(rs.getInt("kilometros"));
-
-            int numPasajeros = rs.getInt("num_pasajeros");
-            cochesConPasajeros.put(coche, numPasajeros);
+    @Override
+    public Map<Coche, Integer> mostrarCochesConNumeroPasajeros() {
+        if (!abrirConexion()) {
+            filas = 2;
+            return null;
         }
 
-    } catch (SQLException e) {
-        throw new SQLException("Error al ejecutar la consulta SQL.", e);
+        Map<Coche, Integer> cochesConPasajeros = new HashMap<>();
+        String sql = "SELECT " +
+                     "c.id AS coche_id, " +
+                     "c.marca, " +
+                     "c.modelo, " +
+                     "c.año_fabricacion, " +
+                     "c.kilometros, " +
+                     "COUNT(pc.id_pasajero) AS num_pasajeros_en_coches " +
+                     "FROM coches c " +
+                     "LEFT JOIN pasajeros_en_coches pc ON c.id = pc.id_coche " +
+                     "WHERE pc.id_pasajero IS NOT NULL " +
+                     "GROUP BY coche_id, c.marca, c.modelo, c.año_fabricacion, c.kilometros";
+
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Coche coche = new Coche();
+                coche.setId(rs.getInt("coche_id"));
+                coche.setMarca(rs.getString("marca"));
+                coche.setModelo(rs.getString("modelo"));
+                coche.setFabYear(rs.getInt("año_fabricacion"));
+                coche.setKilometros(rs.getInt("kilometros"));
+
+                int numPasajeros = rs.getInt("num_pasajeros_en_coches");
+                cochesConPasajeros.put(coche, numPasajeros);
+            }
+
+        } catch (SQLException e) {
+            return null;
+        }
+
+        return cochesConPasajeros;
     }
 
-    return cochesConPasajeros;
-}
   	
 
   	/**
