@@ -6,7 +6,21 @@ import modelo.presentacion.opciones.OpcionesMenuPasajeros;
 import modelo.presentacion.opciones.OpcionesVistaPrincipal;
 
 
-
+/**
+ * Clase que representa la interfaz de usuario principal para la gestión de coches y pasajeros.
+ * Proporciona un menú interactivo con opciones para realizar diversas operaciones.
+ * 
+ * <p>Esta clase utiliza las clases para gestionar
+ * las operaciones disponibles en los menús principal y de gestión de pasajeros, respectivamente.
+ * 
+ * 
+ * @see OpcionesVistaPrincipal
+ * @see OpcionesMenuPasajeros
+ * 
+ * @author Alberto Arroyo Santofimia
+ * @version 2.0
+ * @since 2024-02-08
+ */
 public class VistaPrincipal {
 
 	private static Scanner leer;
@@ -114,11 +128,15 @@ public class VistaPrincipal {
 				
 }
 
-
-public static int menu() {
-	
-	int opcion = 0;
-	System.out.println("----------------------------------------------------");
+	/**
+     * Método que muestra el menú principal y recupera la opción elegida por el usuario.
+     *
+     * @return La opción elegida por el usuario.
+     */
+	public static int menu() {
+		
+		int opcion = 0;
+		System.out.println("----------------------------------------------------");
 	System.out.println("|                MENU  PRINCIPAL                   |");
 	System.out.println("----------------------------------------------------");
 	System.out.println("1. Añadir nuevo coche");
@@ -137,21 +155,27 @@ public static int menu() {
 		opcion = leer.nextInt();
 		
 	} catch (java.util.InputMismatchException e) {
-        // Atrapar la excepción si se ingresa algo que no es un entero
-        System.out.println("Entrada no válida. Ingrese un número entero.");
-        leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
-    }
+	    // Atrapar la excepción si se ingresa algo que no es un entero
+	    System.out.println("Entrada no válida. Ingrese un número entero.");
+	    leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
+	}
 	
 	if (opcion<1 || opcion > 8) {
 		System.out.println("OPCION INCORRECTA");
+		}
+		
+		return opcion;	
 	}
 	
-	return opcion;	
-	}
-public static int menuGestionPasajeros() {
-	
-	int opcion = 0;
-	System.out.println("----------------------------------------------------");
+	/**
+     * Método que muestra el menú de gestión de pasajeros y recupera la opción elegida por el usuario.
+     *
+     * @return La opción elegida por el usuario en el menú de gestión de pasajeros.
+     */
+	public static int menuGestionPasajeros() {
+		
+		int opcion = 0;
+		System.out.println("----------------------------------------------------");
 	System.out.println("|            MENU  GESTIÓN PASAJEROS               |");
 	System.out.println("----------------------------------------------------");
 	System.out.println("1. Crear nuevo pasajero");
@@ -171,10 +195,10 @@ public static int menuGestionPasajeros() {
 		opcion = leer.nextInt();
 		
 	} catch (java.util.InputMismatchException e) {
-        // Atrapar la excepción si se ingresa algo que no es un entero
-        System.out.println("Entrada no válida. Ingrese un número entero.");
-        leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
-    }
+	    // Atrapar la excepción si se ingresa algo que no es un entero
+	    System.out.println("Entrada no válida. Ingrese un número entero.");
+	    leer.next(); // Limpiar el búfer de entrada para evitar un bucle infinito
+	}
 	
 	if (opcion<1 || opcion > 9) {
 		System.out.println("OPCION INCORRECTA");

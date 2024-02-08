@@ -5,18 +5,28 @@ import java.util.Scanner;
 
 import modelo.entidad.Coche;
 import modelo.negocio.GestorCoche;
+import modelo.negocio.GestorDatos;
 
 
-
+/**
+ * Clase que define las opciones del menú principal para gestionar coches.
+ * Permite realizar operaciones como añadir, eliminar, consultar y modificar coches,
+ * listar todos los coches registrados, mostrar datos de conexión a la base de datos,
+ * e iniciar el programa gestionando la conexión y acceso a la base de datos.
+ * 
+ * @author Alberto Arroyo Santofimia
+ * @version 2.0
+ * @since 2024-02-08
+ */
 public class OpcionesVistaPrincipal {
 	
 	
 	private GestorCoche gestor= new GestorCoche();
+	private GestorDatos gestorDatos = new GestorDatos();
 	
-	//opcion 1 del menu principal, añadir coche
 	/**
-     * Realiza la opción de crear un nuevo coche , comprueba si ya existe ese nombre
-     * y en caso de que no existe lo añade .
+     * Realiza la opción de crear un nuevo coche, comprueba si ya existe ese nombre
+     * y en caso de que no existe lo añade.
      *
      * @param leer Scanner utilizado para la entrada de datos.
      */
@@ -41,7 +51,11 @@ public class OpcionesVistaPrincipal {
 	}		
 	
 	
-	
+	/**
+     * Realiza la opción de eliminar un coche por su ID.
+     *
+     * @param leer Scanner utilizado para la entrada de datos.
+     */
 	public void opcion2(Scanner leer) {
 		System.out.println("Id del coche a eliminar:");
 		int idBorrar = leer.nextInt();
@@ -61,7 +75,11 @@ public class OpcionesVistaPrincipal {
 	            break;
 		}		
 	}
-	
+	/**
+     * Realiza la opción de consultar un coche por su ID e imprime sus detalles.
+     *
+     * @param leer Scanner utilizado para la entrada de datos.
+     */
 	public void opcion3(Scanner leer) {
 		System.out.println("Id del coche a consultar:");
 		int idConsultar = leer.nextInt();
@@ -78,7 +96,11 @@ public class OpcionesVistaPrincipal {
 		}
 	
 	}
-	
+	/**
+     * Realiza la opción de modificar un coche por su ID con nuevos datos.
+     *
+     * @param leer Scanner utilizado para la entrada de datos.
+     */
 	public void opcion4(Scanner leer) {
 		System.out.println("Indroduzca el ID del coche a modificar:");
 		int idBuscar = leer.nextInt();
@@ -102,7 +124,11 @@ public class OpcionesVistaPrincipal {
 	            break;
 		}		
 	}	
-	
+	 /**
+     * Realiza la opción de listar todos los coches registrados.
+     *
+     * @param leer Scanner utilizado para la entrada de datos.
+     */
 	public void opcion5(Scanner leer) {
 		List<Coche> listaAuxiliar = gestor.buscarTodosCoches();
 		if (listaAuxiliar == null || listaAuxiliar.isEmpty()) {
@@ -120,19 +146,25 @@ public class OpcionesVistaPrincipal {
 			
 		}	
 	}
-	
+	/**
+     * Realiza la opción 6 (pendiente de futura implementación).
+     *
+     * @param leer Scanner utilizado para la entrada de datos.
+     */
 	public void opcion6(Scanner leer) {
 		
 	}
-	
+	/**
+     * Muestra los datos de conexión a la base de datos.
+     */
 	public void opcion7() {
 		System.out.println("----------------------------------------------------");
 		System.out.println("|                DATOS  ACCESO                     |");
 		System.out.println("----------------------------------------------------");
-		System.out.println("url:"+ gestor.obtenerPropiedades("url"));
-		System.out.println("nombreBBDD:"+gestor.obtenerPropiedades("nombreBBDD"));
-		System.out.println("usuario:"+gestor.obtenerPropiedades("usuario"));
-		System.out.println("password:"+gestor.obtenerPropiedades("password"));
+		System.out.println("url:"+ gestorDatos.obtenerPropiedades("url"));
+		System.out.println("nombreBBDD:"+gestorDatos.obtenerPropiedades("nombreBBDD"));
+		System.out.println("usuario:"+gestorDatos.obtenerPropiedades("usuario"));
+		System.out.println("password:"+gestorDatos.obtenerPropiedades("password"));
 		System.out.println("----------------------------------------------------");
 	}
 	
@@ -141,18 +173,18 @@ public class OpcionesVistaPrincipal {
 	/**
      * Inicia el programa, llamando al método para conectarse a la BBDD y crear
      * la base de datos y la tabla en caso de que no exista. Y accede al fichero
-     * properties que contiene los datos para la conexion.
+     * properties que contiene los datos para la conexión.
      * Muestra mensajes según el resultado.
      */
 	public void iniciarPrograma() {
 		
-		boolean accesoAPropiedades=gestor.iniciarPropiedades();
+		boolean accesoAPropiedades=gestorDatos.iniciarPropiedades();
 		if (accesoAPropiedades) {
 			System.out.println("Acceso a propiedades correcto");
 		}else {
 			System.out.println("Error al acceder a propiedades");
 		}
-		int accesoADatos= gestor.iniciarAccesoADatos();
+		int accesoADatos= gestorDatos.iniciarAccesoADatos();
 		switch (accesoADatos) {
 	        case 1://login del usuario, lectura del archivo
 	        	//System.out.println("Creado el archivo");
@@ -165,42 +197,30 @@ public class OpcionesVistaPrincipal {
 		}
 		
 	}
-	
 
-	
 	//metodos propios
+	
+	/**
+     * Método para introducir datos de un coche desde la consola.
+     *
+     * @return Objeto Coche creado a partir de los datos introducidos.
+     */
 	public Coche introducirDatos() {
-		
-		boolean validarVacio=true;
+
 		Scanner leer = new Scanner(System.in);
 		Coche cocheAuxiliar = new Coche();	
-		
-		while (validarVacio) {
-			System.out.println("Marca:");
-			String marcaCoche = leer.nextLine();
-			cocheAuxiliar.setMarca(marcaCoche);
-			if(validarVacio=gestor.validarCampoVacio(marcaCoche)) {
-				System.out.println("**La marca del coche no puede estar vacia\n");
-				
-			}
-		}
-		validarVacio=true;
-		while (validarVacio) {
-			System.out.println("Modelo:");
-			String modeloCoche = leer.nextLine();
-			cocheAuxiliar.setModelo(modeloCoche);
-			if(validarVacio=gestor.validarCampoVacio(modeloCoche)) {
-				System.out.println("**El modelo del coche no puede estar vacio:\n");
-			}
-		}
+		System.out.println("Marca:");
+		String marcaCoche = gestorDatos.validarCampoVacioString();
+		cocheAuxiliar.setMarca(marcaCoche);
+		System.out.println("Modelo:");
+		String modeloCoche = gestorDatos.validarCampoVacioString();
+		cocheAuxiliar.setModelo(modeloCoche);
 		System.out.println("Año de fabricación:");
 		int fabYear = leer.nextInt();
 		System.out.println("Kilometros:");
 		int kilometros = leer.nextInt();
-
 		cocheAuxiliar.setFabYear(fabYear);
-		cocheAuxiliar.setKilometros(kilometros);
-		
+		cocheAuxiliar.setKilometros(kilometros);	
 		return cocheAuxiliar;
 	}
 

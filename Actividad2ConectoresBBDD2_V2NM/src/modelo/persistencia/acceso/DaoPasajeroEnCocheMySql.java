@@ -14,18 +14,29 @@ import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
 import modelo.persistencia.datos.ConfiguracionPropiedades;
 import modelo.persistencia.interfaces.DaoPasajeroEnCoche;
-
+/**
+ * Clase que implementa el interfaz DaoPasajeroEnCoche y proporciona métodos para interactuar con la persistencia
+ * utilizando una base de datos MySQL.
+ * 
+ * <p>Proporciona métodos para realizar operaciones CRUD en la entidad PasajeroEnCoche, así como métodos adicionales
+ * para abrir y cerrar conexiones y obtener información específica sobre pasajeros y coches.
+ * 
+ * @see DaoPasajeroEnCoche
+ * @author Alberto Arroyo Santofimia
+ * @version v2.0
+ * @since 2024-02-08
+ */
 public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
 	
 	//variables
 	private int filas = 0;
 	private String sql;
 	private Connection conexion;
-	private ResultSet rs;
+
 	
 	
 	/**
-	 * Metodo para asocia un pasajero a un coche en la base de datos.
+	 * Método para asociar un pasajero a un coche en la base de datos.
 	 *
 	 * @param idCoche    El ID del coche al cual se asociará el pasajero.
 	 * @param idPasajero El ID del pasajero que se asociará al coche.
@@ -56,7 +67,7 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
 	}
 	
 	/**
-	 * Metodo para eliminar un pasajero de un coche en la base de datos.
+	 * Método para eliminar un pasajero de un coche en la base de datos.
 	 *
 	 * @param idCoche    El ID del coche del cual se eliminará el pasajero.
 	 * @param idPasajero El ID del pasajero que se eliminará del coche.
@@ -92,12 +103,12 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
 		return filas;
 	}
 	/**
-     * Obtiene una lista de coches con información sobre los pasajeros asociados a un coche específico.
-     *
-     * @param idCoche El ID del coche del cual se desea obtener la información de pasajeros.
-     * @return Una lista de objetos Coche con información sobre los pasajeros asociados al coche.
-     *         Si no se puede abrir la conexión, devuelve null.
-     */
+	 * Obtiene una lista de coches con información sobre los pasajeros asociados a un coche específico.
+	 *
+	 * @param idCoche El ID del coche del cual se desea obtener la información de pasajeros.
+	 * @return Una lista de objetos Coche con información sobre los pasajeros asociados al coche.
+	 *         Si no se puede abrir la conexión, devuelve null.
+	 */
 	@Override
 	public List<Coche> pasajerosEnCoche(int idCoche) {
 		if(!abrirConexion()){
@@ -143,11 +154,11 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
 		
 
 	/**
-     * Obtiene una lista de coches disponibles que no tienen un pasajero asociado en la base de datos.
-     *
-     * @return Una lista de objetos Coche que representan los coches disponibles.
-     *         Si no se puede abrir la conexión, devuelve null.
-     */
+	 * Obtiene una lista de coches disponibles que no tienen un pasajero asociado en la base de datos.
+	 *
+	 * @return Una lista de objetos Coche que representan los coches disponibles.
+	 *         Si no se puede abrir la conexión, devuelve null.
+	 */
     @Override
     public List<Coche> mostrarCochesDisponibles() {
   		if(!abrirConexion()){
@@ -179,13 +190,13 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
           }
   		return listaAuxiliar;
       }
-/**
- * Muestra todos los coches disponibles y el número de pasajeros asociados en la base de datos.
- *
- * @return Un Map donde las claves son objetos Coche representando coches disponibles,
- *         y los valores son enteros representando el número de pasajeros asociados a cada coche.
- *         Si no se puede abrir la conexión, devuelve null.
- */
+    /**
+	 * Muestra todos los coches disponibles y el número de pasajeros asociados en la base de datos.
+	 *
+	 * @return Un Map donde las claves son objetos Coche representando coches disponibles,
+	 *         y los valores son enteros representando el número de pasajeros asociados a cada coche.
+	 *         Si no se puede abrir la conexión, devuelve null.
+	 */
     @Override
     public Map<Coche, Integer> mostrarCochesConNumeroPasajeros() {
         if (!abrirConexion()) {
@@ -230,11 +241,12 @@ public class DaoPasajeroEnCocheMySql implements DaoPasajeroEnCoche{
 
   	
 
-  	/**
-  	 * Muestra todos los coches y sus pasajeros asociados en la base de datos.  	 *
-  	 * @return Una lista de objetos Coche con información sobre los coches y sus pasajeros asociados.
-  	 *         Si no se puede abrir la conexión, devuelve null.
-  	 */
+    /**
+	 * Muestra todos los coches y sus pasajeros asociados en la base de datos.
+	 *
+	 * @return Una lista de objetos Coche con información sobre los coches y sus pasajeros asociados.
+	 *         Si no se puede abrir la conexión, devuelve null.
+	 */
   	@Override
   	public List<Coche> mostrarCochesConPasajeros() {
     	if(!abrirConexion()){

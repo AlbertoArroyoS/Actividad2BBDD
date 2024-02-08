@@ -1,18 +1,28 @@
 package modelo.persistencia.acceso;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import modelo.entidad.Coche;
 import modelo.entidad.Pasajero;
 import modelo.persistencia.datos.ConfiguracionPropiedades;
 import modelo.persistencia.interfaces.DaoPasajero;
-
+/**
+ * Clase que implementa el interfaz DaoPasajero y proporciona métodos para interactuar con la persistencia
+ * utilizando una base de datos MySQL.
+ * 
+ * <p>Proporciona métodos para realizar operaciones CRUD en la entidad Pasajero, así como métodos adicionales
+ * para abrir y cerrar conexiones y buscar información específica sobre pasajeros.
+ * 
+ * @see DaoPasajero
+ * @author Alberto Arroyo Santofimia
+ * @version v2.0
+ * @since 2024-02-08
+ */
 public class DaoPasajeroMySql implements DaoPasajero{
 	
 	//variables
@@ -22,15 +32,15 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		private ResultSet rs;
 
 
-	//1
 	/**
-	 * Método para dar de alta un pasajero en la Base de datos que recibimos por parametro
+	 * Método para dar de alta un pasajero en la Base de datos que recibimos por parámetro.
 	 * 
+	 * @param pasajero Objeto Pasajero que se dará de alta en la base de datos.
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha dado de alta ningun coche
-	 *         - <b>1</b> si se ha añadido correctamente
-	 *         - <b>2</b> si hay un error al establecer la conexion
-	 *         - <b>3</b> error de Excepcion
+	 *         - <b>0</b> no se ha dado de alta ningún pasajero.
+	 *         - <b>1</b> si se ha añadido correctamente.
+	 *         - <b>2</b> si hay un error al establecer la conexión.
+	 *         - <b>3</b> error de Excepción.
 	 */
 	@Override
 	public int altaPasajero(Pasajero pasajero) {
@@ -60,18 +70,15 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		return filas;
 	}
 	
-	//2
 	/**
-	 * Método para eliminar un pasajero por su id
+	 * Método para eliminar un pasajero por su id.
 	 * 
-	 * @param id representa el id del pasajero que vamos a
-	 * hacer la busqueda.
-	 * 
+	 * @param idPasajero Representa el id del pasajero que vamos a borrar.
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha borrado ningun coche
-	 *         - <b>1</b> se ha eliminado correctamente
-	 *         - <b>2</b> si hay un error al establecer la conexion
-	 *         - <b>3</b> error de Excepcion
+	 *         - <b>0</b> no se ha borrado ningún pasajero.
+	 *         - <b>1</b> se ha eliminado correctamente.
+	 *         - <b>2</b> si hay un error al establecer la conexión.
+	 *         - <b>3</b> error de Excepción.
 	 */
 	@Override
 	public int eliminarPasajero(int idPasajero) {
@@ -90,13 +97,12 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		}		
 		return filas;
 	}
-	//3
 	/**
-	 * Método que devuelve un objeto pasajero a partir de su id
-	 * @param id representa el id del pasajero que vamos a
-	 * hacer la busqueda.
-	 * @return - <b>el objeto pasajero</b> si existe en la base de datos
-	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 * Método que devuelve un objeto Pasajero a partir de su id.
+	 * 
+	 * @param idPasajero Representa el id del pasajero que vamos a buscar.
+	 * @return - <b>El objeto Pasajero</b> si existe en la base de datos.
+	 *         - <b>null</b> en caso de que no exista o haya habido un problema en la conexión.
 	 */
 	@Override
 	public Pasajero buscarPasajero(int idPasajero) {
@@ -123,9 +129,10 @@ public class DaoPasajeroMySql implements DaoPasajero{
 		return pasajero;
 	}
 	/**
-	 * Método que devuelve una lista de pasajeros
-	 * @return - <b>List<Pasajero>
-	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 * Método que devuelve una lista de todos los pasajeros.
+	 * 
+	 * @return - <b>List<Pasajero></b> si existen pasajeros en la base de datos.
+	 *         - <b>null</b> en caso de que no exista o haya habido un problema en la conexión.
 	 */
 	@Override
 	public List<Pasajero> buscarTodosPasajeros() {
@@ -157,8 +164,8 @@ public class DaoPasajeroMySql implements DaoPasajero{
 	 * Abre una conexión a la base de datos utilizando la URL, el nombre de la base de datos,
 	 * el usuario y la contraseña proporcionados.
 	 *
-	 * @return - <b>true</b> si la conexión se abre con éxito
-	 *         - <b>false</b> false en caso de error.
+	 * @return - <b>true</b> si la conexión se abre con éxito.
+	 *         - <b>false</b> en caso de error.
 	 */
 	public boolean abrirConexion(){
 		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();

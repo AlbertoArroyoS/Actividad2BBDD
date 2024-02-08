@@ -1,5 +1,14 @@
 package modelo.entidad;
-
+/**
+ * Clase que representa a un pasajero asociado a un coche.
+ * 
+ * <p>Un coche puede tener varios pasajeros asociados, pero cada pasajero
+ * está asociado a un solo coche.
+ * 
+ * @author Alberto Arroyo Santofimia
+ * @version 2.0
+ * @since 2024-02-08
+ */
 public class Pasajero {
 	
 	/* Tipo de relacion

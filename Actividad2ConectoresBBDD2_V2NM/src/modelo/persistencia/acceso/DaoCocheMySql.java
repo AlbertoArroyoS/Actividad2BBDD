@@ -1,39 +1,28 @@
 package modelo.persistencia.acceso;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.entidad.Coche;
-import modelo.entidad.Pasajero;
 import modelo.persistencia.datos.ConfiguracionPropiedades;
 import modelo.persistencia.interfaces.DaoCoche;
 
 /**
- * Clase en la que estan los metodos que implementan el interface y los métodos propios:
+ * Clase que implementa el interfaz DaoCoche y proporciona métodos para interactuar con la persistencia
+ * utilizando una base de datos MySQL.
  * 
- *  1. altaCoche(Coche coche) : int
- *  2. eliminarCoche(int id) : int
- *  3. buscarCoche(int id) : Coche
- *  4. modificarCoche(Coche coche) : int
- *  5. buscarTodosCoches() : List<Coche>
- *  6. accesoADatos() : int 
- * Métodos própios
- *  7. abrirConexion() : boolean 
- *  8. cerrarConexion() : boolean 
- *  9. crearBaseDeDatos(Connection conexion) : void 
- * 10. crearTablaUsuarios(Connection conexion) :void  
+ * <p>Proporciona métodos para realizar operaciones CRUD en la entidad Coche, así como métodos adicionales
+ * para abrir y cerrar conexiones y crear la base de datos y tablas si es necesario.
  * 
  * @see DaoCoche
- *  
  * @author Alberto Arroyo Santofimia
- * 
- * @version v1.0
- *
+ * @version v2.0
+ * @since 2024-02-08
  */
 public class DaoCocheMySql implements DaoCoche{
 	
@@ -46,15 +35,15 @@ public class DaoCocheMySql implements DaoCoche{
 	private ResultSet rs;
 	
 	
-	//1
 	/**
-	 * Método para dar de alta un coche en la Base de datos que recibimos por parametro
+	 * Método para dar de alta un coche en la base de datos que se recibe por parámetro.
 	 * 
+	 * @param coche El coche que se agregará a la base de datos.
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha dado de alta ningun coche
-	 *         - <b>1</b> si se ha añadido correctamente
-	 *         - <b>2</b> si hay un error al establecer la conexion
-	 *         - <b>3</b> error de Excepcion
+	 *         - <b>0</b> no se ha dado de alta ningún coche.
+	 *         - <b>1</b> se ha añadido correctamente.
+	 *         - <b>2</b> hay un error al establecer la conexión.
+	 *         - <b>3</b> error de excepción.
 	 */
 	@Override
 	public int altaCoche(Coche coche) {
@@ -84,17 +73,15 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return filas;
 	}
-	//2
 	/**
-	 * Método para eliminar un coche por su id
+	 * Método para eliminar un coche por su id.
 	 * 
-	 * @param id representa el id del pasajero que vamos a eliminar
-	 * 
+	 * @param id El id del coche a eliminar.
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha borrado ningun coche
-	 *         - <b>1</b> se ha eliminado correctamente
-	 *         - <b>2</b> si hay un error al establecer la conexion
-	 *         - <b>3</b> error de Excepcion
+	 *         - <b>0</b> no se ha borrado ningún coche.
+	 *         - <b>1</b> se ha eliminado correctamente.
+	 *         - <b>2</b> hay un error al establecer la conexión.
+	 *         - <b>3</b> error de excepción.
 	 */
 	@Override
 	public int eliminarCoche(int id) {
@@ -113,13 +100,11 @@ public class DaoCocheMySql implements DaoCoche{
 		}		
 		return filas;
 	}
-	//3
 	/**
-	 * Método que devuelve un objeto coche a partir de su id
-	 * @param id representa el id del coche que vamos a
-	 * hacer la busqueda.
-	 * @return - <b>el objeto coche</b> si existe en la base de datos
-	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 * Método que devuelve un objeto coche a partir de su id.
+	 * 
+	 * @param id El id del coche a buscar.
+	 * @return El objeto coche si existe en la base de datos, null en caso de que no exista o haya un problema en la conexión.
 	 */
 	@Override
 	public Coche buscarCoche(int id) {
@@ -146,16 +131,15 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return coche;
 	}
-	//4
 	/**
-	 * Método para modificar un coche de la base de datos introduciendo su id
-	 * por parámetro
+	 * Método para modificar un coche en la base de datos.
 	 * 
+	 * @param coche El coche modificado.
 	 * @return Entero que indica el resultado de la operación:
-	 *         - <b>0</b> no se ha dado de alta ningun coche
-	 *         - <b>1</b> si se ha añadido correctamente
-	 *         - <b>2</b> si hay un error al establecer la conexion
-	 *         - <b>3</b> error de Excepcion
+	 *         - <b>0</b> no se ha modificado ningún coche.
+	 *         - <b>1</b> se ha modificado correctamente.
+	 *         - <b>2</b> hay un error al establecer la conexión.
+	 *         - <b>3</b> error de excepción.
 	 */
 	@Override
 	public int modificarCoche(Coche coche) {
@@ -180,11 +164,10 @@ public class DaoCocheMySql implements DaoCoche{
 		
 		return filas;
 	}
-	//5
 	/**
-	 * Método que devuelve una lista de coches
-	 * @return - <b>List<Usuario>
-	 *         - <b>null</b> en caso de que no exista o hayamos tenido un problema en la conexion
+	 * Método que devuelve una lista de coches.
+	 * 
+	 * @return La lista de coches si existe en la base de datos, null en caso de que no exista o haya un problema en la conexión.
 	 */
 	@Override
 	public List<Coche> buscarTodosCoches() {
@@ -211,13 +194,11 @@ public class DaoCocheMySql implements DaoCoche{
 		return lista;
 	}
 	
-	//7	
 	/**
 	 * Abre una conexión a la base de datos utilizando la URL, el nombre de la base de datos,
 	 * el usuario y la contraseña proporcionados.
 	 *
-	 * @return - <b>true</b> si la conexión se abre con éxito
-	 *         - <b>false</b> false en caso de error.
+	 * @return <b>true</b> si la conexión se abre con éxito, <b>false</b> en caso de error.
 	 */
 	public boolean abrirConexion(){
 		ConfiguracionPropiedades conf = new ConfiguracionPropiedades();
@@ -232,28 +213,7 @@ public class DaoCocheMySql implements DaoCoche{
 		}
 		return true;
 	}
-	//8
-	/**
-	 * Cierra la conexión con la base de datos.
-	 * 
-	 * @return - <b>true</b> si la conexión se cerró correctamente
-	 *         - <b>false</b> false en caso de error.
-	 */
-	/*public boolean cerrarConexion(){
-		try {
-			conexion.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}*/
-	//9
 
-
-  //metodo sacar todos los coches disponibles, pedido en requerimiento 2 añadir pasajero a coche
-    
-    //REQUERIMIENTO 2
     
     
   	

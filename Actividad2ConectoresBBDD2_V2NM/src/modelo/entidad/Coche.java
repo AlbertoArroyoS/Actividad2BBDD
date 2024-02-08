@@ -1,5 +1,11 @@
 package modelo.entidad;
-
+/**
+ * Clase que representa un coche.
+ * 
+ * Esta clase contiene atributos que describen las características de un coche, 
+ * @author Alberto Arroyo Santofimia
+ * @version 2.0
+ */
 public class Coche {
 	
 	//Atributos privados
@@ -9,7 +15,7 @@ public class Coche {
 	private int fabYear;
 	private int kilometros;
 	
-	//requerimiento 2 - relacion 1:N 
+	//relacion 1:N 
 	private Pasajero pasajero;
 	
 	

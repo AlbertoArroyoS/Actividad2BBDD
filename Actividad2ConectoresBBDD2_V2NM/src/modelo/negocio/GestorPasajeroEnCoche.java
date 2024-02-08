@@ -1,16 +1,23 @@
 package modelo.negocio;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import modelo.entidad.Coche;
 import modelo.persistencia.acceso.DaoPasajeroEnCocheMySql;
 import modelo.persistencia.interfaces.DaoPasajeroEnCoche;
-
+/**
+ * Clase que gestiona la interacción entre pasajeros y coches en el sistema.
+ * 
+ * <p>Proporciona métodos para mostrar coches disponibles, mostrar coches con pasajeros asociados,
+ * asociar y eliminar pasajeros de coches, obtener información sobre pasajeros en un coche específico,
+ * y mostrar coches con el número de pasajeros asociados.
+ * 
+ * <p>Requiere un objeto DaoPasajeroEnCoche para interactuar con la persistencia.
+ * 
+ * @author Alberto Arroyo Santofimia
+ * @version 2.0
+ * @since 2024-02-08
+ */
 public class GestorPasajeroEnCoche {
 	
 ////REQUERIMIENTO 2
@@ -27,11 +34,8 @@ public class GestorPasajeroEnCoche {
 		return listaAuxiliar;
     }
   		
-
-	
-	/**
+    /**
   	 * Muestra todos los coches y sus pasajeros asociados en la base de datos.  	 *
-  	 * @param conexion La conexión a la base de datos.
   	 * @return Una lista de objetos Coche con información sobre los coches y sus pasajeros asociados.
   	 *         Si no se puede abrir la conexión, devuelve null.
   	 */
@@ -40,7 +44,7 @@ public class GestorPasajeroEnCoche {
 		return listaAuxiliar;
     }
     /**
-	 * Metodo para asocia un pasajero a un coche en la base de datos.
+	 * Metodo para asociar un pasajero a un coche en la base de datos.
 	 *
 	 * @param idCoche    El ID del coche al cual se asociará el pasajero.
 	 * @param idPasajero El ID del pasajero que se asociará al coche.
@@ -71,7 +75,7 @@ public class GestorPasajeroEnCoche {
 	}
 	
 	/**
-     * Obtiene una lista de coches con información sobre los pasajeros asociados a un coche específico.
+     * Metodo para obtiener una lista de coches con información sobre los pasajeros asociados a un coche específico.
      *
      * @param idCoche El ID del coche del cual se desea obtener la información de pasajeros.
      * @return Una lista de objetos Coche con información sobre los pasajeros asociados al coche.

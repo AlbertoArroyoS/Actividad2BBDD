@@ -4,18 +4,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+/**
+ * Clase que proporciona métodos para la creación de tablas en una base de datos y configuración inicial.
+ *
+ * <p>Esta clase incluye métodos para crear tablas específicas en una base de datos y realizar configuraciones iniciales
+ * como la creación de una base de datos si no existe.
+ *
+ * @since 2024-02-08
+ * @version v2.0
+ * @author Alberto Arroyo Santofimia
+ */
 public class TablasBaseDeDatos {
 	
 	private Connection conexion;
-    //10
-	// Método para crear la tabla de usuarios
-    /**
-     * Crea una tabla de coches en la base de datos proporcionada si no existe.
-     *
-     * @param conexion La conexión a la base de datos donde se creará la nueva tabla de coches.
-     * @throws SQLException Si ocurre un error al intentar crear la tabla de coches.
-     */
+	/**
+	 * Crea una tabla de coches en la base de datos proporcionada si no existe.
+	 *
+	 * @param conexion La conexión a la base de datos donde se creará la nueva tabla de coches.
+	 * @throws SQLException Si ocurre un error al intentar crear la tabla de coches.
+	 */
     private static void crearTablaUsuarios(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de coches si no existe
@@ -30,6 +37,12 @@ public class TablasBaseDeDatos {
     }
     
     // Método para crear la tabla de pasajeros
+    /**
+     * Crea una tabla de pasajeros en la base de datos proporcionada si no existe.
+     *
+     * @param conexion La conexión a la base de datos donde se creará la nueva tabla de pasajeros.
+     * @throws SQLException Si ocurre un error al intentar crear la tabla de pasajeros.
+     */
     private static void crearTablaPasajeros(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de pasajeros si no existe
@@ -41,17 +54,14 @@ public class TablasBaseDeDatos {
                    + ")");
         }
     }
-    /*
-    private static void crearRelacionForeignKey(Connection conexion) throws SQLException {
-        try (Statement statement = conexion.createStatement()) {
-            // Crear la relación de clave externa si no existe
-            statement.executeUpdate("ALTER TABLE coches "
-                    + "ADD CONSTRAINT fk_pasajero "
-                    + "FOREIGN KEY (id_pasajero) "
-                    + "REFERENCES Pasajeros(id)");
-        }
-    }*/
-    
+
+    // Método para crear la tabla de relación N:N entre coches y pasajeros
+    /**
+     * Crea una tabla de relación N:N entre coches y pasajeros en la base de datos proporcionada si no existe.
+     *
+     * @param conexion La conexión a la base de datos donde se creará la nueva tabla de relación.
+     * @throws SQLException Si ocurre un error al intentar crear la tabla de relación.
+     */
     private static void crearTablaPasajerosEnCoches(Connection conexion) throws SQLException {
         try (Statement statement = conexion.createStatement()) {
             // Crear la tabla de relación N:N entre coches y pasajeros
@@ -64,8 +74,7 @@ public class TablasBaseDeDatos {
                     + ")");
         }
     }
-    
-  //6
+
   	/**
   	 * Crea la conexion para el almacenamiento de usuarios y llama al medoto para
   	 * crear la base de datos en caso que que no exista y al metodo para crear
